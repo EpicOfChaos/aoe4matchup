@@ -8,6 +8,7 @@
   "scripts": {
     "lint": "npx eslint . --fix --ext .js,.ts,.jsx",
     "webapp": "yarn workspace @ps-serverless/webapp",
+    "build": "yarn webapp build",
     "test": ""
   },
   "devDependencies": {
