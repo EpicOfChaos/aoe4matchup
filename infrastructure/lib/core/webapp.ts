@@ -59,7 +59,7 @@ export class WebApp extends cdk.Construct {
       relativeWebAppPath: props.relativeWebAppPath,
       webDistribution: this.webDistribution,
       webDistributionPaths: ['/*'],
-      buildCommand: 'yarn build',
+      buildCommand: 'yarn build:pipeline',
       buildDirectory: 'build',
       bucket: props.hostingBucket,
       prune: false,
