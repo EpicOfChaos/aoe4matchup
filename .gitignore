@@ -1,3 +1,12 @@
+# Intellij
+.idea
+
+# CDK
+infrastructure/cdk.out
+
+# React Build
+webapp/build
+
 # Logs
 logs
 *.log
