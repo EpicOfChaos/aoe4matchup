@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "lint": "npx eslint . --fix --ext .js,.ts,.jsx",
-    "webapp": "yarn workspace @ps-serverless/webapp",
+    "webapp": "yarn workspace @aoe4matchup/webapp",
     "build": "yarn webapp build",
     "test": ""
   },

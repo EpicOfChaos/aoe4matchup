@@ -25,5 +25,6 @@ export async function getLeaderBoard(leaderBoardId, count = DEFAULT_LEADERBOARD_
   const { data } = await getApiClient().get('/leaderboard', {
     params,
   })
+  console.log(data)
   return data
 }
