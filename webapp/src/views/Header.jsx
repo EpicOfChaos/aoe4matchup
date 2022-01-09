@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { styled, alpha, useTheme } from '@mui/material/styles'
+import { alpha, styled, useTheme } from '@mui/material/styles'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'

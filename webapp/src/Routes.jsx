@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { createTheme, Paper } from '@mui/material'
+import { Paper } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import Header from './views/Header'
 import Footer from './views/Footer'
