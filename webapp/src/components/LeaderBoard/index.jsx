@@ -7,8 +7,8 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import PropTypes from 'prop-types'
-// import { hasFlag } from 'country-flag-icons'
-// import Flags from 'country-flag-icons/react/3x2'
+import { hasFlag } from 'country-flag-icons'
+import Flags from 'country-flag-icons/react/3x2'
 import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles(() => ({
@@ -33,7 +33,7 @@ export default function LeaderBoard({ rows }) {
         </TableHead>
         <TableBody>
           {rows.map(row => {
-            // const CountryFlag = (row.country && hasFlag(row.country) && Flags[row.country]) || null
+            const CountryFlag = (row.country && hasFlag(row.country) && Flags[row.country]) || null
             return (
               <TableRow key={row.rank} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">
@@ -41,7 +41,7 @@ export default function LeaderBoard({ rows }) {
                 </TableCell>
                 <TableCell align="right">{row.rating}</TableCell>
                 <TableCell align="right">
-                  {/*{CountryFlag && <CountryFlag className={classes.countryFlag} />}*/}
+                  {CountryFlag && <CountryFlag className={classes.countryFlag} />}
                   &nbsp;
                   {row.name}
                 </TableCell>
