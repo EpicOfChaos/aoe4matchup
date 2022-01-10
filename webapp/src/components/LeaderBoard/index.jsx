@@ -10,7 +10,7 @@ import PropTypes from 'prop-types'
 import { hasFlag } from 'country-flag-icons'
 import Flags from 'country-flag-icons/react/3x2'
 import { makeStyles } from '@mui/styles'
-import { differenceInDays, differenceInHours, fromUnixTime } from 'date-fns'
+import { differenceInDays, differenceInHours, differenceInMinutes, fromUnixTime } from 'date-fns'
 
 const useStyles = makeStyles(() => ({
   countryFlag: {
@@ -38,12 +38,15 @@ export default function LeaderBoard({ rows }) {
         <TableBody>
           {rows.map(row => {
             const CountryFlag = (row.country && hasFlag(row.country) && Flags[row.country]) || null
-            const hoursFromLastMatch = differenceInHours(new Date(), fromUnixTime(row.last_match_time))
+            const minutesFromLastMatch = differenceInMinutes(new Date(), fromUnixTime(row.last_match_time))
+
             let lastMatch = ''
-            if (hoursFromLastMatch >= 24) {
+            if (minutesFromLastMatch >= 1440) {
               lastMatch = `${differenceInDays(new Date(), fromUnixTime(row.last_match_time))} days ago`
+            } else if (minutesFromLastMatch >= 120) {
+              lastMatch = `${differenceInHours(new Date(), fromUnixTime(row.last_match_time))} hours ago`
             } else {
-              lastMatch = `${hoursFromLastMatch} days ago`
+              lastMatch = `${minutesFromLastMatch} minutes ago`
             }
             return (
               <TableRow key={row.rank} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
