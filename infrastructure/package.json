@@ -27,6 +27,7 @@
   "dependencies": {
     "@aws-cdk/assert": "1.138.1",
     "@aws-cdk/assets": "1.138.1",
+    "@aws-cdk/aws-acmpca": "1.138.1",
     "@aws-cdk/aws-apigateway": "1.138.1",
     "@aws-cdk/aws-apigatewayv2": "1.138.1",
     "@aws-cdk/aws-apigatewayv2-authorizers": "1.138.1",
@@ -48,6 +49,7 @@
     "@aws-cdk/aws-codeguruprofiler": "1.138.1",
     "@aws-cdk/aws-codepipeline": "1.138.1",
     "@aws-cdk/aws-codepipeline-actions": "1.138.1",
+    "@aws-cdk/aws-codestarnotifications": "1.138.1",
     "@aws-cdk/aws-cognito": "1.138.1",
     "@aws-cdk/aws-databrew": "1.138.1",
     "@aws-cdk/aws-dynamodb": "1.138.1",
@@ -96,11 +98,12 @@
     "@aws-cdk/cx-api": "1.138.1",
     "@aws-cdk/lambda-layer-awscli": "1.138.1",
     "@aws-cdk/lambda-layer-kubectl": "1.138.1",
+    "@aws-cdk/lambda-layer-node-proxy-agent": "1.138.1",
     "@aws-cdk/pipelines": "1.138.1",
     "@aws-cdk/region-info": "1.138.1",
     "ajv": "^8.8.2",
     "axios": "^0.24.0",
-    "constructs": "10.0.28",
+    "constructs": "3.3.69",
     "source-map-support": "^0.5.16"
   }
 }
