@@ -1,5 +1,11 @@
 import axios from 'axios'
-import { DEFAULT_LEADERBOARD_COUNT, GAME_ID } from '../../constants/aoe4-net'
+import {
+  DEFAULT_LANGUAGE,
+  DEFAULT_LEADER_BOARD_ID,
+  DEFAULT_LEADERBOARD_COUNT,
+  GAME_ID,
+  HISTORY_COUNT,
+} from '../../constants/aoe4-net'
 
 let client
 
@@ -26,5 +32,32 @@ export async function getLeaderBoard(leaderBoardId, count = DEFAULT_LEADERBOARD_
   const { data } = await getApiClient().get('/leaderboard', {
     params,
   })
+  return data
+}
+
+export async function getMatchHistory(profileId) {
+  const { data } = await getApiClient().get('/player/matches', {
+    params: {
+      game: GAME_ID,
+      language: DEFAULT_LANGUAGE,
+      count: HISTORY_COUNT,
+      profile_id: profileId,
+    },
+  })
+
+  return data
+}
+
+export async function getPlayerRating(profileId, leaderBoardId = DEFAULT_LEADER_BOARD_ID) {
+  const { data } = await getApiClient().get('/player/ratinghistory', {
+    params: {
+      game: GAME_ID,
+      language: DEFAULT_LANGUAGE,
+      count: HISTORY_COUNT,
+      profile_id: profileId,
+      leaderboard_id: leaderBoardId,
+    },
+  })
+
   return data
 }
