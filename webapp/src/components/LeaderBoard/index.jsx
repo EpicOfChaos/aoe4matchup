@@ -56,12 +56,7 @@ export default function LeaderBoard({ rows }) {
                 </TableCell>
                 <TableCell align="right">{row.rating}</TableCell>
                 <TableCell align="right">
-                  <Link
-                    to={{
-                      pathname: '/matchup',
-                      state: [row],
-                    }}
-                  >
+                  <Link href={`/matchup?player=${row.profile_id}`}>
                     {CountryFlag && <CountryFlag className={classes.countryFlag} />}
                     &nbsp;
                     {row.name}
