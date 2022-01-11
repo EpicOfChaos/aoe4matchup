@@ -1,11 +1,10 @@
-import * as React from 'react'
-import { alpha, styled, useTheme } from '@mui/material/styles'
+import React, { useEffect, useState } from 'react'
+import { alpha, styled, useTheme, makeStyles } from '@mui/material/styles'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import InputBase from '@mui/material/InputBase'
 import MenuItem from '@mui/material/MenuItem'
 import Menu from '@mui/material/Menu'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -13,7 +12,11 @@ import SearchIcon from '@mui/icons-material/Search'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import MoreIcon from '@mui/icons-material/MoreVert'
+import { Autocomplete, TextField } from '@mui/material'
+import debounce from 'lodash/debounce'
 import { ColorModeContext } from '../ColorModeContext'
+import { getLeaderBoard } from '../services/aoeiv-net/client'
+import { DEFAULT_LEADER_BOARD_ID } from '../constants/aoe4-net'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -41,19 +44,18 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   justifyContent: 'center',
 }))
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}))
+const fetchSearch = async (query, cb) => {
+  const res = await getLeaderBoard(DEFAULT_LEADER_BOARD_ID, 25, query)
+  cb(res.leaderboard)
+}
+
+const debouncedFetchData = debounce((query, cb) => {
+  if (query) {
+    fetchSearch(query, cb)
+  } else {
+    cb([])
+  }
+}, 500)
 
 export default function Header() {
   const theme = useTheme()
@@ -107,6 +109,14 @@ export default function Header() {
       </MenuItem>
     </Menu>
   )
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState([])
+
+  useEffect(() => {
+    debouncedFetchData(searchQuery, res => {
+      setSearchResults(res)
+    })
+  }, [searchQuery])
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -122,7 +132,30 @@ export default function Header() {
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase placeholder="Search player…" inputProps={{ 'aria-label': 'search player' }} />
+            <Autocomplete
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  fullWidth
+                  placeholder="search player"
+                  onChange={event => setSearchQuery(event.target.value)}
+                  sx={{
+                    color: 'inherit',
+                    width: '250px',
+                    '& .MuiOutlinedInput-root': {
+                      color: 'inherit',
+                      padding: theme.spacing(1, 1, 1, 0),
+                      // vertical padding + font size from searchIcon
+                      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+                      transition: theme.transitions.create('width'),
+                    },
+                  }}
+                />
+              )}
+              options={searchResults}
+              getOptionLabel={option => option.name}
+              freeSolo
+            />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

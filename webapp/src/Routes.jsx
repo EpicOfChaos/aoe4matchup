@@ -7,6 +7,7 @@ import Footer from './views/Footer'
 import './App.css'
 import Home from './views/Home'
 import NotFound from './views/NotFound'
+import Matchup from './views/Matchup'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,7 +32,7 @@ function Routes() {
               <Switch>
                 <Route exact path="/" component={Home} />
                 {/*<Route exact path="/profile" component={Profile} />*/}
-                {/*<Route path="/matchup/:profile1/profile2" component={Detail} />*/}
+                <Route path="/matchup" component={Matchup} />
                 <Route path="*" component={NotFound} />
               </Switch>
             </div>

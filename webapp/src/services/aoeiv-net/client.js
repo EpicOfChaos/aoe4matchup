@@ -21,10 +21,10 @@ export async function getLeaderBoard(leaderBoardId, count = DEFAULT_LEADERBOARD_
   if (nameSearch) {
     params.search = nameSearch
   }
+  console.log('Params', params)
 
   const { data } = await getApiClient().get('/leaderboard', {
     params,
   })
-  console.log(data)
   return data
 }

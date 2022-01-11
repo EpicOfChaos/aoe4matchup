@@ -11,6 +11,7 @@ import { hasFlag } from 'country-flag-icons'
 import Flags from 'country-flag-icons/react/3x2'
 import { makeStyles } from '@mui/styles'
 import { differenceInDays, differenceInHours, differenceInMinutes, fromUnixTime } from 'date-fns'
+import { Link } from '@mui/material'
 
 const useStyles = makeStyles(() => ({
   countryFlag: {
@@ -55,9 +56,16 @@ export default function LeaderBoard({ rows }) {
                 </TableCell>
                 <TableCell align="right">{row.rating}</TableCell>
                 <TableCell align="right">
-                  {CountryFlag && <CountryFlag className={classes.countryFlag} />}
-                  &nbsp;
-                  {row.name}
+                  <Link
+                    to={{
+                      pathname: '/matchup',
+                      state: [row],
+                    }}
+                  >
+                    {CountryFlag && <CountryFlag className={classes.countryFlag} />}
+                    &nbsp;
+                    {row.name}
+                  </Link>
                 </TableCell>
                 <TableCell align="right">{row.games}</TableCell>
                 <TableCell align="right">{row.wins}</TableCell>
