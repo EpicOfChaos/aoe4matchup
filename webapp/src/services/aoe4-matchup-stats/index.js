@@ -7,7 +7,6 @@ export function calculateStats(playersData, mapId) {
     const playerMatchHistoryStats = calculateMatchHistoryStats(profileId, matchHistory, playerRating)
     playerStatistics[profileId] = {
       winRate: playerMatchHistoryStats.winRate,
-      mapWinRate: playerMatchHistoryStats.mapWinRates[mapId],
       mostRecentPlayedCiv: playerMatchHistoryStats.mostRecentCiv,
       civWinRates: playerMatchHistoryStats.civWinRates,
       mostPlayedCiv: playerMatchHistoryStats.mostPlayedCiv,
@@ -21,9 +20,11 @@ export function calculateStats(playersData, mapId) {
         return b
       })
       const mapHighestWinRateCivWinRate = playerMapCivRates[mapHighestWinRateCiv]
-
-      playerStatistics[profileId].mapHighestWinRateCiv = mapHighestWinRateCiv
-      playerStatistics[profileId].mapHighestWinRateCivWinRate = mapHighestWinRateCivWinRate
+      playerStatistics[profileId].mapStats = {
+        mapHighestWinRateCiv,
+        mapHighestWinRateCivWinRate,
+        mapWinRate: playerMatchHistoryStats.mapWinRates[mapId],
+      }
     }
   }
 
