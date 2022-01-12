@@ -4,9 +4,14 @@ import LadderSearch from '../LadderSearch'
 
 export default function PlayerSearchCard() {
   return (
-    <Card>
+    <Card
+      sx={{
+        width: '280px',
+        margin: '20px',
+      }}
+    >
       <CardContent>
-        <Typography sx={{ fontSize: 24 }} color="text.primary" gutterBottom>
+        <Typography sx={{ fontSize: 20 }} color="text.primary" gutterBottom>
           Find Player
         </Typography>
         <LadderSearch />

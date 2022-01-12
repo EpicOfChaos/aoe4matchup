@@ -14,16 +14,16 @@ export function calculateStats(profileId, matchHistory, playerRating) {
     const mapId = map.id
     const playerMapCivRates = playerMatchHistoryStats.mapCivSelectionRates[mapId]
     if (playerMapCivRates) {
-      const mapHighestWinRateCiv = Object.keys(playerMapCivRates).reduce((a, b) => {
+      const mapHighestSelectedCiv = Object.keys(playerMapCivRates).reduce((a, b) => {
         if (playerMapCivRates[a] >= playerMapCivRates[b]) {
           return a
         }
         return b
       })
-      const mapHighestWinRateCivWinRate = playerMapCivRates[mapHighestWinRateCiv]
+      const mapHighestSelectedCivSelectionRate = playerMapCivRates[mapHighestSelectedCiv]
       playerStatistics.mapStats[mapId] = {
-        mapHighestWinRateCiv,
-        mapHighestWinRateCivWinRate,
+        mapHighestSelectedCiv,
+        mapHighestSelectedCivSelectionRate,
         mapWinRate: playerMatchHistoryStats.mapWinRates[mapId],
       }
     }

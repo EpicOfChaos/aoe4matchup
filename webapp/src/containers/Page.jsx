@@ -8,8 +8,8 @@ import { NavLink } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    paddingTop: theme.spacing(5),
-    paddingBottom: theme.spacing(7),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(4),
   },
   titleContainer: {
     padding: theme.spacing(2),
@@ -27,25 +27,11 @@ function Page({ title, breadcrumbs, actionItems, children }) {
     <Container className={classes.root}>
       <Paper elevation={2}>
         <Helmet title={title} />
-        <Grid container spacing={3} className={classes.titleContainer}>
+        <Grid container className={classes.titleContainer}>
           <Grid item xs={7}>
-            <Typography variant="h3" gutterBottom display="inline">
+            <Typography variant="h5" display="inline">
               {title}
             </Typography>
-            {breadcrumbs && (
-              <Breadcrumbs aria-label="Breadcrumb" mt={2}>
-                {breadcrumbs.map((bc, idx, arr) => {
-                  if (idx === arr.length - 1) {
-                    return <Typography key={`bc-${bc.name}`}>{bc.name}</Typography>
-                  }
-                  return (
-                    <Link component={NavLink} exact to={bc.link} key={`bc-${bc.name}`}>
-                      {bc.name}
-                    </Link>
-                  )
-                })}
-              </Breadcrumbs>
-            )}
           </Grid>
           <Grid item xs={5}>
             {actionItems}

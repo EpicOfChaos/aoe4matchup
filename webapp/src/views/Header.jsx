@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { alpha, styled, useTheme } from '@mui/material/styles'
-import { useHistory } from 'react-router-dom'
+import SearchIcon from '@mui/icons-material/Search'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -14,6 +14,32 @@ import LightModeIcon from '@mui/icons-material/LightMode'
 import MoreIcon from '@mui/icons-material/MoreVert'
 import { ColorModeContext } from '../ColorModeContext'
 import LadderSearch from '../components/LadderSearch'
+
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(3),
+    width: 'auto',
+  },
+}))
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}))
 
 export default function Header() {
   const theme = useTheme()
@@ -77,7 +103,12 @@ export default function Header() {
           <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
             Age of Empires 4 - Matchup
           </Typography>
-          <LadderSearch />
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <LadderSearch searchIconPadding={`calc(1em + ${theme.spacing(4)})`} />
+          </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton

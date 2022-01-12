@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import uniq from 'lodash/uniq'
+import { useHistory, useLocation } from 'react-router-dom'
+import Box from '@mui/material/Box'
 import Page from '../containers/Page'
 import { useQuery } from '../util/user-query'
 import { getLeaderBoardForPlayer, getMatchHistory, getPlayerRating } from '../services/aoeiv-net/client'
@@ -7,6 +9,7 @@ import { calculateStats } from '../services/aoe4-matchup-stats'
 import PlayerStatCompare from '../components/PlayerStatCompare'
 import { DEFAULT_LEADER_BOARD_ID } from '../constants/aoe4-net'
 import PlayerSearchCard from '../components/PlayerSearchCard'
+import MapSelection from '../components/MapSelection'
 
 async function getPlayerData(players, existingPlayersData) {
   const playerData = {}
@@ -32,6 +35,8 @@ async function getPlayerData(players, existingPlayersData) {
 }
 
 export default function Matchup() {
+  const location = useLocation()
+  const history = useHistory()
   const query = useQuery()
   const [playersData, setPlayersData] = useState({})
   const [mapId, setMapId] = useState(null)
@@ -49,13 +54,36 @@ export default function Matchup() {
   console.log('Map Id: ', mapId)
   return (
     <Page title="Matchup">
-      <PlayerSearchCard />
-      {playersData && Object.keys(playersData).length > 0 && (
-        <PlayerStatCompare
-          playerOrder={uniq(query.getAll('player'))}
-          playersData={playersData}
-          mapId={mapId}
+      <Box
+        sx={{
+          display: 'flex',
+        }}
+      >
+        <PlayerSearchCard />
+        <MapSelection
+          selectFunction={selectedMapId => {
+            const searchParams = new URLSearchParams(location.search)
+
+            if (selectedMapId != null) {
+              searchParams.set('mapId', selectedMapId)
+            } else {
+              searchParams.delete('mapId')
+            }
+            history.push({
+              pathname: location.pathname,
+              search: searchParams.toString(),
+            })
+          }}
         />
+      </Box>
+      {playersData && Object.keys(playersData).length > 0 && (
+        <Box>
+          <PlayerStatCompare
+            playerOrder={uniq(query.getAll('player'))}
+            playersData={playersData}
+            mapId={mapId}
+          />
+        </Box>
       )}
     </Page>
   )
