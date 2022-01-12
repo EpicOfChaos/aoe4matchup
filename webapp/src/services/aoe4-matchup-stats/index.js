@@ -13,17 +13,19 @@ export function calculateStats(profileId, matchHistory, playerRating) {
   for (const map of aoeStrings.map_type) {
     const mapId = map.id
     const playerMapCivRates = playerMatchHistoryStats.mapCivSelectionRates[mapId]
-    const mapHighestWinRateCiv = Object.keys(playerMapCivRates).reduce((a, b) => {
-      if (playerMapCivRates[a] >= playerMapCivRates[b]) {
-        return a
+    if (playerMapCivRates) {
+      const mapHighestWinRateCiv = Object.keys(playerMapCivRates).reduce((a, b) => {
+        if (playerMapCivRates[a] >= playerMapCivRates[b]) {
+          return a
+        }
+        return b
+      })
+      const mapHighestWinRateCivWinRate = playerMapCivRates[mapHighestWinRateCiv]
+      playerStatistics.mapStats[mapId] = {
+        mapHighestWinRateCiv,
+        mapHighestWinRateCivWinRate,
+        mapWinRate: playerMatchHistoryStats.mapWinRates[mapId],
       }
-      return b
-    })
-    const mapHighestWinRateCivWinRate = playerMapCivRates[mapHighestWinRateCiv]
-    playerStatistics.mapStats[mapId] = {
-      mapHighestWinRateCiv,
-      mapHighestWinRateCivWinRate,
-      mapWinRate: playerMatchHistoryStats.mapWinRates[mapId],
     }
   }
 
