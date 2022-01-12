@@ -1,30 +1,29 @@
 import { calculateMatchHistoryStats } from './calculate-match-history-stats'
+import aoeStrings from '../aoeiv-net/aoeiv-strings.json'
 
-export function calculateStats(playersData, mapId) {
-  const playerStatistics = {}
-  for (const profileId of Object.keys(playersData)) {
-    const { matchHistory, playerRating } = playersData[profileId]
-    const playerMatchHistoryStats = calculateMatchHistoryStats(profileId, matchHistory, playerRating)
-    playerStatistics[profileId] = {
-      winRate: playerMatchHistoryStats.winRate,
-      mostRecentPlayedCiv: playerMatchHistoryStats.mostRecentCiv,
-      civWinRates: playerMatchHistoryStats.civWinRates,
-      mostPlayedCiv: playerMatchHistoryStats.mostPlayedCiv,
-    }
-    if (mapId) {
-      const playerMapCivRates = playerMatchHistoryStats.mapCivSelectionRates[mapId]
-      const mapHighestWinRateCiv = Object.keys(playerMapCivRates).reduce((a, b) => {
-        if (playerMapCivRates[a] >= playerMapCivRates[b]) {
-          return a
-        }
-        return b
-      })
-      const mapHighestWinRateCivWinRate = playerMapCivRates[mapHighestWinRateCiv]
-      playerStatistics[profileId].mapStats = {
-        mapHighestWinRateCiv,
-        mapHighestWinRateCivWinRate,
-        mapWinRate: playerMatchHistoryStats.mapWinRates[mapId],
+export function calculateStats(profileId, matchHistory, playerRating) {
+  const playerMatchHistoryStats = calculateMatchHistoryStats(profileId, matchHistory, playerRating)
+  const playerStatistics = {
+    winRate: playerMatchHistoryStats.winRate,
+    mostRecentPlayedCiv: playerMatchHistoryStats.mostRecentCiv,
+    civWinRates: playerMatchHistoryStats.civWinRates,
+    mostPlayedCiv: playerMatchHistoryStats.mostPlayedCiv,
+    mapStats: {},
+  }
+  for (const map of aoeStrings.map_type) {
+    const mapId = map.id
+    const playerMapCivRates = playerMatchHistoryStats.mapCivSelectionRates[mapId]
+    const mapHighestWinRateCiv = Object.keys(playerMapCivRates).reduce((a, b) => {
+      if (playerMapCivRates[a] >= playerMapCivRates[b]) {
+        return a
       }
+      return b
+    })
+    const mapHighestWinRateCivWinRate = playerMapCivRates[mapHighestWinRateCiv]
+    playerStatistics.mapStats[mapId] = {
+      mapHighestWinRateCiv,
+      mapHighestWinRateCivWinRate,
+      mapWinRate: playerMatchHistoryStats.mapWinRates[mapId],
     }
   }
 

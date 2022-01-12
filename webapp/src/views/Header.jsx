@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { alpha, styled, useTheme, makeStyles } from '@mui/material/styles'
+import { alpha, styled, useTheme } from '@mui/material/styles'
+import { useHistory } from 'react-router-dom'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -8,54 +9,11 @@ import Typography from '@mui/material/Typography'
 import MenuItem from '@mui/material/MenuItem'
 import Menu from '@mui/material/Menu'
 import MenuIcon from '@mui/icons-material/Menu'
-import SearchIcon from '@mui/icons-material/Search'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import MoreIcon from '@mui/icons-material/MoreVert'
-import { Autocomplete, TextField } from '@mui/material'
-import debounce from 'lodash/debounce'
 import { ColorModeContext } from '../ColorModeContext'
-import { getLeaderBoard } from '../services/aoeiv-net/client'
-import { DEFAULT_LEADER_BOARD_ID } from '../constants/aoe4-net'
-
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}))
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}))
-
-const fetchSearch = async (query, cb) => {
-  const res = await getLeaderBoard(DEFAULT_LEADER_BOARD_ID, 25, query)
-  cb(res.leaderboard)
-}
-
-const debouncedFetchData = debounce((query, cb) => {
-  if (query) {
-    fetchSearch(query, cb)
-  } else {
-    cb([])
-  }
-}, 500)
+import LadderSearch from '../components/LadderSearch'
 
 export default function Header() {
   const theme = useTheme()
@@ -66,7 +24,6 @@ export default function Header() {
 
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
-  // const history = useHistory()
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null)
@@ -109,14 +66,6 @@ export default function Header() {
       </MenuItem>
     </Menu>
   )
-  const [searchQuery, setSearchQuery] = useState('')
-  const [searchResults, setSearchResults] = useState([])
-
-  useEffect(() => {
-    debouncedFetchData(searchQuery, res => {
-      setSearchResults(res)
-    })
-  }, [searchQuery])
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -128,35 +77,7 @@ export default function Header() {
           <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
             Age of Empires 4 - Matchup
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <Autocomplete
-              renderInput={params => (
-                <TextField
-                  {...params}
-                  fullWidth
-                  placeholder="search player"
-                  onChange={event => setSearchQuery(event.target.value)}
-                  sx={{
-                    color: 'inherit',
-                    width: '250px',
-                    '& .MuiOutlinedInput-root': {
-                      color: 'inherit',
-                      padding: theme.spacing(1, 1, 1, 0),
-                      // vertical padding + font size from searchIcon
-                      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-                      transition: theme.transitions.create('width'),
-                    },
-                  }}
-                />
-              )}
-              options={searchResults}
-              getOptionLabel={option => option.name}
-              freeSolo
-            />
-          </Search>
+          <LadderSearch />
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton
