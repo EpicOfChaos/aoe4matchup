@@ -40,7 +40,6 @@ export default function LadderSearch({ searchIconPadding }) {
       onChange={(event, newValue) => {
         if (newValue && newValue.profile_id) {
           if (location.pathname === '/matchup') {
-            console.log('On matchup page, adding player')
             const searchParams = new URLSearchParams(location.search)
             searchParams.append('player', newValue.profile_id)
             history.push({
@@ -48,7 +47,6 @@ export default function LadderSearch({ searchIconPadding }) {
               search: searchParams.toString(),
             })
           } else {
-            console.log('not on matchup page, redirecting')
             history.push(`/matchup?player=${newValue.profile_id}`)
           }
         }

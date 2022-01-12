@@ -6,7 +6,6 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import TableBody from '@mui/material/TableBody'
-import TableContainer from '@mui/material/TableContainer'
 import ClearIcon from '@mui/icons-material/Clear'
 import IconButton from '@mui/material/IconButton'
 import { useHistory, useLocation } from 'react-router-dom'
@@ -31,7 +30,6 @@ export default function PlayerStatCompare({ playerOrder, playersData, mapId }) {
   const history = useHistory()
 
   const { headerRow, metricRows } = useMemo(() => {
-    console.log('Calculating compare rows')
     const header = [{ key: 'header', data: '' }]
     const rankRow = [{ key: 'rank', data: 'Rank' }]
     const ratingRow = [{ key: 'rating', data: 'Rating (Highest Rating)' }]
@@ -126,16 +124,13 @@ export default function PlayerStatCompare({ playerOrder, playersData, mapId }) {
                       onClick={() => {
                         const searchParams = new URLSearchParams(location.search)
                         const players = searchParams.getAll('player')
-                        console.log('Players: ', players)
                         const remainingPlayers = players.filter(player => {
                           return player !== columnData.profileId.toString()
                         })
-                        console.log('Remaining Players', remainingPlayers)
                         searchParams.delete('player')
                         remainingPlayers.forEach(p => {
                           searchParams.append('player', p)
                         })
-                        console.log('Search Params: ', searchParams.toString())
                         history.push({
                           pathname: location.pathname,
                           search: searchParams.toString(),
@@ -152,7 +147,7 @@ export default function PlayerStatCompare({ playerOrder, playersData, mapId }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {metricRows.map((row, i) => {
+          {metricRows.map(row => {
             return (
               <TableRow key={`tr_${row[0].key}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 {row.map((data, j) => {

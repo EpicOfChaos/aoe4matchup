@@ -15,7 +15,6 @@ async function getPlayerData(players, existingPlayersData) {
   const playerData = {}
   for (const player of players) {
     if (existingPlayersData[player]) {
-      console.log('found existing player data not fetching new for ', player)
       playerData[player] = existingPlayersData[player]
     } else {
       const [matchHistory, playerRating, playerLadder] = await Promise.all([
@@ -42,7 +41,6 @@ export default function Matchup() {
   const [mapId, setMapId] = useState(null)
   useEffect(() => {
     const players = uniq(query.getAll('player'))
-    console.log('Player Profile Ids: ', players)
     const map = query.get('mapId')
     setMapId(map)
     getPlayerData(players, playersData).then(data => {
@@ -50,8 +48,6 @@ export default function Matchup() {
     })
   }, [query])
 
-  console.log('Player Data: ', playersData)
-  console.log('Map Id: ', mapId)
   return (
     <Page title="Matchup">
       <Box

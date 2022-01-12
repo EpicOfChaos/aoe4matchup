@@ -23,7 +23,6 @@ export default function MapSelection({ selectFunction }) {
           getOptionLabel={option => option.string}
           options={aoeStrings.map_type}
           onChange={(event, newValue) => {
-            console.log('New Val: ', newValue)
             let newMapId = null
             if (newValue && newValue.id != null) {
               newMapId = newValue.id

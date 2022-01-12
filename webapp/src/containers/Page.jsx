@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@mui/styles'
-import { Breadcrumbs, Container, Link, Paper, Typography } from '@mui/material'
+import { Container, Paper, Typography } from '@mui/material'
 import { Helmet } from 'react-helmet-async'
 import Grid from '@mui/material/Grid'
-import { NavLink } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,12 +14,12 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
   },
   contentContainer: {
-    padding: theme.spacing(5),
+    padding: theme.spacing(1),
     marginBottom: theme.spacing(4),
   },
 }))
 
-function Page({ title, breadcrumbs, actionItems, children }) {
+function Page({ title, actionItems, children }) {
   const classes = useStyles()
 
   return (
@@ -47,18 +46,11 @@ function Page({ title, breadcrumbs, actionItems, children }) {
 
 Page.propTypes = {
   title: PropTypes.string.isRequired,
-  breadcrumbs: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      link: PropTypes.string,
-    }),
-  ),
   actionItems: PropTypes.node,
   children: PropTypes.node.isRequired,
 }
 
 Page.defaultProps = {
-  breadcrumbs: [],
   actionItems: <></>,
 }
 

@@ -13,7 +13,7 @@ export default function PlayerSearchCard() {
     >
       <CardContent>
         <Typography sx={{ fontSize: 20 }} color="text.primary" gutterBottom>
-          Find Player
+          Compare Player
         </Typography>
         <LadderSearch />
       </CardContent>
