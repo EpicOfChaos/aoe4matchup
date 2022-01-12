@@ -9,6 +9,7 @@ export default function PlayerSearchCard() {
         width: '280px',
         margin: '20px',
       }}
+      elevation={4}
     >
       <CardContent>
         <Typography sx={{ fontSize: 20 }} color="text.primary" gutterBottom>
