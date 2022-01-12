@@ -1,19 +1,19 @@
-import * as React from 'react'
-import { styled, alpha, useTheme } from '@mui/material/styles'
+import React from 'react'
+import { alpha, styled, useTheme } from '@mui/material/styles'
+import SearchIcon from '@mui/icons-material/Search'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import InputBase from '@mui/material/InputBase'
 import MenuItem from '@mui/material/MenuItem'
 import Menu from '@mui/material/Menu'
 import MenuIcon from '@mui/icons-material/Menu'
-import SearchIcon from '@mui/icons-material/Search'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import MoreIcon from '@mui/icons-material/MoreVert'
 import { ColorModeContext } from '../ColorModeContext'
+import LadderSearch from '../components/LadderSearch'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -41,38 +41,16 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   justifyContent: 'center',
 }))
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}))
-
 export default function Header() {
   const theme = useTheme()
   const colorMode = React.useContext(ColorModeContext)
 
-  const [anchorEl, setAnchorEl] = React.useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
 
-  const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
-  // const history = useHistory()
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null)
-  }
-
-  const handleMenuClose = () => {
-    setAnchorEl(null)
-    handleMobileMenuClose()
   }
 
   const handleMobileMenuOpen = event => {
@@ -122,7 +100,7 @@ export default function Header() {
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase placeholder="Search player…" inputProps={{ 'aria-label': 'search player' }} />
+            <LadderSearch searchIconPadding={`calc(1em + ${theme.spacing(4)})`} />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

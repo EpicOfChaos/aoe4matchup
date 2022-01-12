@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "lint": "npx eslint . --fix --ext .js,.ts,.jsx",
-    "webapp": "yarn workspace @ps-serverless/webapp",
+    "webapp": "yarn workspace @aoe4matchup/webapp",
     "build": "yarn webapp build",
     "test": ""
   },
@@ -44,6 +44,7 @@
   "resolutions": {
     "@typescript-eslint/eslint-plugin": "^4.6.1",
     "@typescript-eslint/parser": "^4.6.1",
-    "jest": "26.6.0"
+    "jest": "26.6.0",
+    "colors": "1.4.0"
   }
 }

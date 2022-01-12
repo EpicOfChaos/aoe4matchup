@@ -12,6 +12,7 @@ import { ColorModeContext } from './ColorModeContext'
 
 const helmetContext = {}
 const THEME_KEY = 'aoe4matchup-theme'
+
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
   const storedTheme = localStorage.getItem(THEME_KEY)

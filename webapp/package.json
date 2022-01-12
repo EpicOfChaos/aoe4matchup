@@ -1,5 +1,5 @@
 {
-  "name": "@ps-serverless/webapp",
+  "name": "@aoe4matchup/webapp",
   "version": "0.1.0",
   "private": true,
   "main": "build/index.js",
@@ -14,14 +14,17 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
+    "country-flag-icons": "^1.4.19",
+    "date-fns": "^2.28.0",
     "eslint-plugin-react": "^7.23.2",
+    "lodash": "^4.17.21",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-file-icon": "^1.0.0",
     "react-helmet-async": "^1.0.7",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.2",
+    "react-scripts": "5.0.0",
     "react-transition-group": "^4.4.1",
     "web-vitals": "^1.0.1"
   },
@@ -29,7 +32,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": [
@@ -49,8 +54,43 @@
       "max-len": "off",
       "no-unused-vars": "warn",
       "implicit-arrow-linebreak": "warn",
-      "import/prefer-default-export": "off"
-    }
+      "import/prefer-default-export": "off",
+      "react/jsx-one-expression-per-line": "off",
+      "react/no-unescaped-entities": "off",
+      "function-paren-newline": "off",
+      "arrow-body-style": "off",
+      "react/jsx-wrap-multilines": "off",
+      "no-restricted-syntax": "off",
+      "no-await-in-loop": "off",
+      "operator-linebreak": "off",
+      "react/forbid-prop-types": "off"
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      },
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      },
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
   },
   "browserslist": {
     "production": [
@@ -65,6 +105,22 @@
     ]
   },
   "devDependencies": {
-    "eslint-config-airbnb": "^18.2.1"
+    "@storybook/addon-actions": "^6.4.9",
+    "@storybook/addon-essentials": "^6.4.9",
+    "@storybook/addon-links": "^6.4.9",
+    "@storybook/builder-webpack5": "^6.4.9",
+    "@storybook/manager-webpack5": "^6.4.9",
+    "@storybook/node-logger": "^6.4.9",
+    "@storybook/preset-create-react-app": "^4.0.0",
+    "@storybook/react": "^6.4.9",
+    "babel-loader": "^8.0.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-react-app": "^7.0.0",
+    "msw": "^0.36.3",
+    "msw-storybook-addon": "^1.5.0",
+    "webpack": "^5.65.0"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }

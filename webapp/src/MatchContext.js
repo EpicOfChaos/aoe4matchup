@@ -1,5 +1,5 @@
 import React from 'react'
 
-export const ColorModeContext = React.createContext({
+export const MatchContext = React.createContext({
   toggleColorMode: () => {},
 })
