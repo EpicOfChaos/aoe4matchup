@@ -25,11 +25,9 @@ export async function getLeaderBoardForPlayer(leaderBoardId, profileId) {
     leaderboard_id: leaderBoardId,
     profile_id: profileId,
   }
-  console.log('Player Leaderboard: ', params)
   const { data } = await getApiClient().get('/leaderboard', {
     params,
   })
-  console.log('Player Leaderboard Data: ', data)
   return (data && data.leaderboard && data.leaderboard[0]) || null
 }
 
@@ -42,7 +40,6 @@ export async function getLeaderBoard(leaderBoardId, count = DEFAULT_LEADERBOARD_
   if (nameSearch) {
     params.search = nameSearch
   }
-  console.log('Params', params)
 
   const { data } = await getApiClient().get('/leaderboard', {
     params,

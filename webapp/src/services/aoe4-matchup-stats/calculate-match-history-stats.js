@@ -13,12 +13,10 @@ export function calculateMatchHistoryStats(profileId, matchHistory, ratingHistor
   })
 
   const mapWinRates = groupByWinRate(mapGrouped)
-  console.log(`(${profileId})Map Win Rates: `, mapWinRates)
 
   const civPlayCounts = countBy(autoMatchHistory, match => {
     return match.civId
   })
-  console.log(`(${profileId})Civ Play Counts: `, civPlayCounts)
 
   const civGrouped = groupBy(autoMatchHistory, match => {
     return match.civId
@@ -27,15 +25,12 @@ export function calculateMatchHistoryStats(profileId, matchHistory, ratingHistor
   const civWinRates = groupByWinRate(civGrouped)
 
   const mapCivSelectionRates = civSelectionRate(mapGrouped)
-  console.log(`(${profileId})Map Civ Selection Rates: `, mapCivSelectionRates)
 
   const opponentCivWinRates = groupByWinRate(
     groupBy(autoMatchHistory, match => {
       return match.opponentCivId
     }),
   )
-
-  console.log(`(${profileId})Opponent Civ Win Rates: `, opponentCivWinRates)
 
   const mostPlayedCiv = Object.keys(civPlayCounts).reduce((a, b) => {
     if (civPlayCounts[a] > civPlayCounts[b]) {

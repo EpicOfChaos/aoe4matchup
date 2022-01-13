@@ -1,29 +1,86 @@
 import React, { useEffect, useState } from 'react'
-
+import uniq from 'lodash/uniq'
+import { useHistory, useLocation } from 'react-router-dom'
+import Box from '@mui/material/Box'
 import Page from '../containers/Page'
-import { getLeaderBoard } from '../services/aoeiv-net/client'
-import LeaderBoard from '../components/LeaderBoard'
+import { useQuery } from '../util/user-query'
+import { getLeaderBoardForPlayer, getMatchHistory, getPlayerRating } from '../services/aoeiv-net/client'
+import { calculateStats } from '../services/aoe4-matchup-stats'
+import PlayerStatCompare from '../components/PlayerStatCompare'
 import { DEFAULT_LEADER_BOARD_ID } from '../constants/aoe4-net'
+import PlayerSearchCard from '../components/PlayerSearchCard'
+import MapSelection from '../components/MapSelection'
 
-function Home() {
-  const [leaderboard, setLeaderboard] = useState([])
-  useEffect(() => {
-    async function getLeaderBoardData() {
-      setLeaderboard(await getLeaderBoard(DEFAULT_LEADER_BOARD_ID, 10))
+async function getPlayerData(players, existingPlayersData) {
+  const playerData = {}
+  for (const player of players) {
+    if (existingPlayersData[player]) {
+      playerData[player] = existingPlayersData[player]
+    } else {
+      const [matchHistory, playerRating, playerLadder] = await Promise.all([
+        getMatchHistory(player),
+        getPlayerRating(player),
+        getLeaderBoardForPlayer(DEFAULT_LEADER_BOARD_ID, player),
+      ])
+      playerData[player] = {
+        matchHistory,
+        playerRating,
+        playerLadder,
+        stats: calculateStats(player, matchHistory, playerRating),
+      }
     }
+  }
+  return playerData
+}
 
-    getLeaderBoardData()
-  }, [])
+export default function Home() {
+  const location = useLocation()
+  const history = useHistory()
+  const query = useQuery()
+  const [playersData, setPlayersData] = useState({})
+  const [mapId, setMapId] = useState(null)
+  useEffect(() => {
+    const players = uniq(query.getAll('player'))
+    const map = query.get('mapId')
+    setMapId(map)
+    getPlayerData(players, playersData).then(data => {
+      setPlayersData(data)
+    })
+  }, [query])
 
   return (
-    <Page title="Leaderboard">
-      {leaderboard && leaderboard.count > 0 ? (
-        <LeaderBoard rows={leaderboard.leaderboard} />
-      ) : (
-        <div>Loading...</div>
+    <Page title="Matchup">
+      <Box
+        sx={{
+          display: 'flex',
+        }}
+      >
+        <PlayerSearchCard />
+        <MapSelection
+          selectFunction={selectedMapId => {
+            const searchParams = new URLSearchParams(location.search)
+
+            if (selectedMapId != null) {
+              searchParams.set('mapId', selectedMapId)
+            } else {
+              searchParams.delete('mapId')
+            }
+            history.push({
+              pathname: location.pathname,
+              search: searchParams.toString(),
+            })
+          }}
+        />
+      </Box>
+      {playersData && Object.keys(playersData).length > 0 && (
+        <Box>
+          <PlayerStatCompare
+            playerOrder={uniq(query.getAll('player'))}
+            playersData={playersData}
+            mapId={mapId}
+          />
+        </Box>
       )}
     </Page>
   )
 }
-
-export default Home

@@ -7,9 +7,9 @@ import Footer from './views/Footer'
 import './App.css'
 import Home from './views/Home'
 import NotFound from './views/NotFound'
-import Matchup from './views/Matchup'
+import Leaderboard from './views/Leaderboard'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   root: {
     height: '100%',
   },
@@ -31,8 +31,7 @@ function Routes() {
             <div className={classes.content}>
               <Switch>
                 <Route exact path="/" component={Home} />
-                {/*<Route exact path="/profile" component={Profile} />*/}
-                <Route path="/matchup" component={Matchup} />
+                <Route path="/leaderboard" component={Leaderboard} />
                 <Route path="*" component={NotFound} />
               </Switch>
             </div>

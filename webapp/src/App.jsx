@@ -35,15 +35,20 @@ function App() {
     [],
   )
 
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
+  const theme = React.useMemo(() => {
+    return createTheme({
+      palette: {
+        mode,
+        primary: {
+          main: '#011233',
         },
-      }),
-    [mode],
-  )
+        secondary: {
+          main: '#ce8315',
+        },
+      },
+    })
+  }, [mode])
+
   return (
     <HelmetProvider context={helmetContext}>
       <Helmet titleTemplate="%s | Age of Empires 4 - Matchup" defaultTitle="Age of Empires 4 - Matchup" />

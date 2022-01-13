@@ -56,7 +56,7 @@ export default function LeaderBoard({ rows }) {
                 </TableCell>
                 <TableCell align="right">{row.rating}</TableCell>
                 <TableCell align="right">
-                  <Link href={`/matchup?player=${row.profile_id}`}>
+                  <Link href={`/?player=${row.profile_id}`} color="secondary">
                     {CountryFlag && <CountryFlag className={classes.countryFlag} />}
                     &nbsp;
                     {row.name}

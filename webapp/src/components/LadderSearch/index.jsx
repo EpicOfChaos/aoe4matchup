@@ -39,7 +39,7 @@ export default function LadderSearch({ searchIconPadding }) {
       clearOnEscape
       onChange={(event, newValue) => {
         if (newValue && newValue.profile_id) {
-          if (location.pathname === '/matchup') {
+          if (location.pathname === '/') {
             const searchParams = new URLSearchParams(location.search)
             searchParams.append('player', newValue.profile_id)
             history.push({
@@ -47,7 +47,7 @@ export default function LadderSearch({ searchIconPadding }) {
               search: searchParams.toString(),
             })
           } else {
-            history.push(`/matchup?player=${newValue.profile_id}`)
+            history.push(`/?player=${newValue.profile_id}`)
           }
         }
       }}
