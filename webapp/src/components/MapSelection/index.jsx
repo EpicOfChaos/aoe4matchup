@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Autocomplete, Card, CardContent, TextField, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import propTypes from 'prop-types'
@@ -6,12 +6,24 @@ import aoeStrings from '../../services/aoeiv-net/aoeiv-strings.json'
 
 export default function MapSelection({ selectFunction }) {
   const theme = useTheme()
+  const sortedMaps = useMemo(() => {
+    return aoeStrings.map_type.sort((a, b) => {
+      if (a.string < b.string) {
+        return -1
+      }
+      if (a.string > b.string) {
+        return 1
+      }
+      return 0
+    })
+  }, [aoeStrings])
 
   return (
     <Card
       sx={{
         width: '280px',
-        margin: '20px',
+        marginBottom: theme.spacing(2),
+        marginRight: theme.spacing(2),
       }}
       elevation={4}
     >
@@ -21,7 +33,7 @@ export default function MapSelection({ selectFunction }) {
         </Typography>
         <Autocomplete
           getOptionLabel={option => option.string}
-          options={aoeStrings.map_type}
+          options={sortedMaps}
           onChange={(event, newValue) => {
             let newMapId = null
             if (newValue && newValue.id != null) {
