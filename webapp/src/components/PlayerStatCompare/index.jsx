@@ -9,9 +9,11 @@ import TableBody from '@mui/material/TableBody'
 import ClearIcon from '@mui/icons-material/Clear'
 import IconButton from '@mui/material/IconButton'
 import { useHistory, useLocation } from 'react-router-dom'
-import { Tooltip } from '@mui/material'
+import { TableContainer, Tooltip } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import aoeStrings from '../../services/aoeiv-net/aoeiv-strings.json'
+import CivFlag from '../CivFlag'
 
 const mapNames = aoeStrings.map_type.reduce((map, obj) => {
   return {
@@ -30,7 +32,8 @@ const civNames = aoeStrings.civ.reduce((map, obj) => {
 export default function PlayerStatCompare({ playerOrder, playersData, playersLikelyCivPick, mapId }) {
   const location = useLocation()
   const history = useHistory()
-
+  const theme = useTheme()
+  console.log('theme: ', theme)
   const { headerRow, metricRows } = useMemo(() => {
     const header = [{ key: 'header', data: '' }]
     const matchupPickRow = [
@@ -76,6 +79,7 @@ export default function PlayerStatCompare({ playerOrder, playersData, playersLik
         data: `${civNames[playerLikelyCivPick]} (${(stats.civWinRates[playerLikelyCivPick] * 100).toFixed(
           2,
         )}%)`,
+        civId: playerLikelyCivPick,
       })
       rankRow.push({ key: `${rankRow[0].key}_${profileId}`, data: `${playerLadder.rank}` })
       ratingRow.push({
@@ -122,72 +126,77 @@ export default function PlayerStatCompare({ playerOrder, playersData, playersLik
   }, [playerOrder, playersData, playersLikelyCivPick, mapId])
   return (
     <Paper elevation={4}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            {headerRow.map((columnData, i) => {
+      <TableContainer>
+        <Table aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              {headerRow.map((columnData, i) => {
+                const styles = {
+                  minWidth: '150px',
+                }
+                return (
+                  <TableCell sx={styles} key={columnData.profileId}>
+                    {columnData.name}
+                    {i > 0 && (
+                      <Tooltip title="Remove player from matchup comparison." placement="top" arrow>
+                        <IconButton
+                          size="small"
+                          aria-label="remove player"
+                          onClick={() => {
+                            const searchParams = new URLSearchParams(location.search)
+                            const players = searchParams.getAll('player')
+                            const remainingPlayers = players.filter(player => {
+                              return player !== columnData.profileId.toString()
+                            })
+                            searchParams.delete('player')
+                            remainingPlayers.forEach(p => {
+                              searchParams.append('player', p)
+                            })
+                            history.push({
+                              pathname: location.pathname,
+                              search: searchParams.toString(),
+                            })
+                          }}
+                          color="inherit"
+                        >
+                          <ClearIcon fontSize="small" color="error" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                  </TableCell>
+                )
+              })}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {metricRows.map(row => {
               return (
-                <TableCell
-                  sx={{
-                    width: '50px',
-                  }}
-                  key={columnData.profileId}
-                >
-                  {columnData.name}
-                  {i > 0 && (
-                    <Tooltip title="Remove player from matchup comparison." placement="top" arrow>
-                      <IconButton
-                        size="small"
-                        aria-label="remove player"
-                        onClick={() => {
-                          const searchParams = new URLSearchParams(location.search)
-                          const players = searchParams.getAll('player')
-                          const remainingPlayers = players.filter(player => {
-                            return player !== columnData.profileId.toString()
-                          })
-                          searchParams.delete('player')
-                          remainingPlayers.forEach(p => {
-                            searchParams.append('player', p)
-                          })
-                          history.push({
-                            pathname: location.pathname,
-                            search: searchParams.toString(),
-                          })
-                        }}
-                        color="inherit"
-                      >
-                        <ClearIcon fontSize="small" color="error" />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                </TableCell>
+                <TableRow key={`tr_${row[0].key}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  {row.map((data, j) => {
+                    const variant = j === 0 ? 'head' : 'body'
+                    const align = j === 0 ? 'right' : 'left'
+                    const styles = {
+                      minWidth: '150px',
+                    }
+
+                    return (
+                      <TableCell key={data.key} variant={variant} align={align} sx={styles}>
+                        {data.civId && <CivFlag civId={data.civId} />}
+                        {data.data}
+                        {data.tooltip && (
+                          <Tooltip title={data.tooltip} placement="top" arrow>
+                            <InfoOutlinedIcon color="secondary" fontSize="small" />
+                          </Tooltip>
+                        )}
+                      </TableCell>
+                    )
+                  })}
+                </TableRow>
               )
             })}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {metricRows.map(row => {
-            return (
-              <TableRow key={`tr_${row[0].key}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                {row.map((data, j) => {
-                  const variant = j === 0 ? 'head' : 'body'
-                  const align = j === 0 ? 'right' : 'left'
-                  return (
-                    <TableCell key={data.key} variant={variant} align={align}>
-                      {data.data}
-                      {data.tooltip && (
-                        <Tooltip title={data.tooltip} placement="top" arrow>
-                          <InfoOutlinedIcon color="secondary" fontSize="small" />
-                        </Tooltip>
-                      )}
-                    </TableCell>
-                  )
-                })}
-              </TableRow>
-            )
-          })}
-        </TableBody>
-      </Table>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Paper>
   )
 }

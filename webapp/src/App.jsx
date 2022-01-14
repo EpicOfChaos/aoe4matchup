@@ -6,6 +6,7 @@ import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import './App.css'
 import { ThemeProvider } from '@mui/material/styles'
+import Grid from '@mui/material/Grid'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { createTheme, useMediaQuery } from '@mui/material'
 import Routes from './Routes'
@@ -43,24 +44,26 @@ function App() {
       palette: {
         mode,
         primary: {
-          main: '#011233',
+          main: '#006897',
         },
         secondary: {
-          main: '#ce8315',
+          main: '#ffb248',
         },
       },
     })
   }, [mode])
 
   return (
-    <HelmetProvider context={helmetContext}>
-      <Helmet titleTemplate="%s | Age of Empires 4 - Matchup" defaultTitle="Age of Empires 4 - Matchup" />
-      <ColorModeContext.Provider value={colorMode}>
-        <ThemeProvider theme={theme}>
-          <Routes />
-        </ThemeProvider>
-      </ColorModeContext.Provider>
-    </HelmetProvider>
+    <Grid direction="column">
+      <HelmetProvider context={helmetContext}>
+        <Helmet titleTemplate="%s | Age of Empires 4 - Matchup" defaultTitle="Age of Empires 4 - Matchup" />
+        <ColorModeContext.Provider value={colorMode}>
+          <ThemeProvider theme={theme}>
+            <Routes />
+          </ThemeProvider>
+        </ColorModeContext.Provider>
+      </HelmetProvider>
+    </Grid>
   )
 }
 

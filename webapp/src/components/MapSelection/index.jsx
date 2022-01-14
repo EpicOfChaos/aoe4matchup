@@ -2,6 +2,7 @@ import React from 'react'
 import { Autocomplete, Card, CardContent, TextField, Tooltip, Typography } from '@mui/material'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { useTheme } from '@mui/material/styles'
+import MapIcon from '@mui/icons-material/Map'
 import propTypes from 'prop-types'
 import aoeStrings from '../../services/aoeiv-net/aoeiv-strings.json'
 
@@ -33,6 +34,7 @@ export default function MapSelection({ selectFunction }) {
           color="text.primary"
           gutterBottom
         >
+          <MapIcon fontSize="large" color="primary" />
           Select Map
           <Tooltip title="Select a map to compare map specific statistics." placement="top" arrow>
             <InfoOutlinedIcon color="secondary" fontSize="small" />
@@ -52,7 +54,7 @@ export default function MapSelection({ selectFunction }) {
             <TextField
               {...params}
               fullWidth
-              placeholder="search map"
+              placeholder="select map"
               sx={{
                 color: 'inherit',
                 width: '250px',

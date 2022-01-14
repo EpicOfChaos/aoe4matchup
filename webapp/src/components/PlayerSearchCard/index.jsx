@@ -2,6 +2,7 @@ import React from 'react'
 import { Card, CardContent, Tooltip, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import LadderSearch from '../LadderSearch'
 
 export default function PlayerSearchCard() {
@@ -21,6 +22,7 @@ export default function PlayerSearchCard() {
           color="text.primary"
           gutterBottom
         >
+          <PersonOutlineIcon fontSize="large" color="primary" />
           Compare Player
           <Tooltip
             title="Search for a player to compare statistics. Currently you are only able to find and compare 1v1 quick match participants"

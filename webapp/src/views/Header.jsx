@@ -90,7 +90,7 @@ export default function Header() {
           {/*<IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>*/}
           {/*  <MenuIcon />*/}
           {/*</IconButton>*/}
-          <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Typography variant="h6" noWrap component="div">
             Age of Empires 4 - Matchup
           </Typography>
           {/*<Search>*/}
