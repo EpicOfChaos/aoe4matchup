@@ -1,5 +1,6 @@
 import React from 'react'
-import { Autocomplete, Card, CardContent, TextField, Typography } from '@mui/material'
+import { Autocomplete, Card, CardContent, TextField, Tooltip, Typography } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { useTheme } from '@mui/material/styles'
 import propTypes from 'prop-types'
 import aoeStrings from '../../services/aoeiv-net/aoeiv-strings.json'
@@ -27,8 +28,15 @@ export default function MapSelection({ selectFunction }) {
       elevation={4}
     >
       <CardContent>
-        <Typography sx={{ fontSize: 20 }} color="text.primary" gutterBottom>
+        <Typography
+          sx={{ fontSize: 20, display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}
+          color="text.primary"
+          gutterBottom
+        >
           Select Map
+          <Tooltip title="Select a map to compare map specific statistics." placement="top" arrow>
+            <InfoOutlinedIcon color="secondary" fontSize="small" />
+          </Tooltip>
         </Typography>
         <Autocomplete
           getOptionLabel={option => option.string}

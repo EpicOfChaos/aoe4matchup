@@ -1,6 +1,7 @@
 import React from 'react'
-import { Card, CardContent, Typography } from '@mui/material'
+import { Card, CardContent, Tooltip, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import LadderSearch from '../LadderSearch'
 
 export default function PlayerSearchCard() {
@@ -15,8 +16,19 @@ export default function PlayerSearchCard() {
       elevation={4}
     >
       <CardContent>
-        <Typography sx={{ fontSize: 20 }} color="text.primary" gutterBottom>
+        <Typography
+          sx={{ fontSize: 20, display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}
+          color="text.primary"
+          gutterBottom
+        >
           Compare Player
+          <Tooltip
+            title="Search for a player to compare statistics. Currently you are only able to find and compare 1v1 quick match participants"
+            placement="top"
+            arrow
+          >
+            <InfoOutlinedIcon color="secondary" fontSize="small" />
+          </Tooltip>
         </Typography>
         <LadderSearch />
       </CardContent>

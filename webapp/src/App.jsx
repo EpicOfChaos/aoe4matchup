@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactGA from 'react-ga4'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
@@ -13,6 +14,8 @@ import { ColorModeContext } from './ColorModeContext'
 const helmetContext = {}
 const THEME_KEY = 'aoe4matchup-theme'
 
+ReactGA.initialize('G-VH28V7RSJF')
+ReactGA.send('pageview')
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
   const storedTheme = localStorage.getItem(THEME_KEY)

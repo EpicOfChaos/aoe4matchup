@@ -10,7 +10,7 @@ import ClearIcon from '@mui/icons-material/Clear'
 import IconButton from '@mui/material/IconButton'
 import { useHistory, useLocation } from 'react-router-dom'
 import { Tooltip } from '@mui/material'
-import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import aoeStrings from '../../services/aoeiv-net/aoeiv-strings.json'
 
 const mapNames = aoeStrings.map_type.reduce((map, obj) => {
@@ -177,7 +177,7 @@ export default function PlayerStatCompare({ playerOrder, playersData, playersLik
                       {data.data}
                       {data.tooltip && (
                         <Tooltip title={data.tooltip} placement="top" arrow>
-                          <HelpOutlineOutlinedIcon color="secondary" fontSize="small" />
+                          <InfoOutlinedIcon color="secondary" fontSize="small" />
                         </Tooltip>
                       )}
                     </TableCell>
