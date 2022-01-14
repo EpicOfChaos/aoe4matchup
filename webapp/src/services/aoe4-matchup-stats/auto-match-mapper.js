@@ -9,9 +9,6 @@ export function autoMatchMapper(profileId, matchHistory, ratingHistory) {
       const player = find(match.players, p => {
         return p.profile_id.toString() === profileId
       })
-      if (!player) {
-        console.log(`messed up match #${i}`, match)
-      }
       const opponentPlayer = find(match.players, p => {
         return p.profile_id.toString() !== profileId
       })

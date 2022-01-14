@@ -9,6 +9,8 @@ import TableBody from '@mui/material/TableBody'
 import ClearIcon from '@mui/icons-material/Clear'
 import IconButton from '@mui/material/IconButton'
 import { useHistory, useLocation } from 'react-router-dom'
+import { Tooltip } from '@mui/material'
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined'
 import aoeStrings from '../../services/aoeiv-net/aoeiv-strings.json'
 
 const mapNames = aoeStrings.map_type.reduce((map, obj) => {
@@ -25,18 +27,25 @@ const civNames = aoeStrings.civ.reduce((map, obj) => {
   }
 }, {})
 
-export default function PlayerStatCompare({ playerOrder, playersData, mapId }) {
+export default function PlayerStatCompare({ playerOrder, playersData, playersLikelyCivPick, mapId }) {
   const location = useLocation()
   const history = useHistory()
 
   const { headerRow, metricRows } = useMemo(() => {
     const header = [{ key: 'header', data: '' }]
+    const matchupPickRow = [
+      {
+        key: 'matchupPick',
+        data: 'AoE4 Matchup Pick',
+        tooltip: 'Civilization most likely to be picked by the player for this matchup.',
+      },
+    ]
     const rankRow = [{ key: 'rank', data: 'Rank' }]
     const ratingRow = [{ key: 'rating', data: 'Rating (Highest Rating)' }]
     const winPctRow = [{ key: 'win_pct', data: 'Win %' }]
     const lastPlayedCivRow = [{ key: 'last_civ', data: 'Last Played Civ (Win %)' }]
     const mostPlayedCivRow = [{ key: 'most_civ', data: 'Most Played Civ (Win %)' }]
-    const tableRows = [rankRow, ratingRow, winPctRow, lastPlayedCivRow, mostPlayedCivRow]
+    const tableRows = [matchupPickRow, rankRow, ratingRow, winPctRow, lastPlayedCivRow, mostPlayedCivRow]
     const mapWinPctRow = []
     const mapCivWinPctRow = []
     if (mapId != null) {
@@ -55,10 +64,18 @@ export default function PlayerStatCompare({ playerOrder, playersData, mapId }) {
       const { stats } = playersData[profileId]
       const playerData = playersData[profileId]
       const { playerLadder } = playerData
+      const playerLikelyCivPick = playersLikelyCivPick[profileId]
+
       header.push({
         key: `${header[0].key}_${profileId}`,
         profileId: playerLadder.profile_id,
         name: playerLadder.name,
+      })
+      matchupPickRow.push({
+        key: `${matchupPickRow[0].key}_${profileId}`,
+        data: `${civNames[playerLikelyCivPick]} (${(stats.civWinRates[playerLikelyCivPick] * 100).toFixed(
+          2,
+        )}%)`,
       })
       rankRow.push({ key: `${rankRow[0].key}_${profileId}`, data: `${playerLadder.rank}` })
       ratingRow.push({
@@ -102,7 +119,7 @@ export default function PlayerStatCompare({ playerOrder, playersData, mapId }) {
     }
 
     return { headerRow: header, metricRows: tableRows }
-  }, [playerOrder, playersData, mapId])
+  }, [playerOrder, playersData, playersLikelyCivPick, mapId])
   return (
     <Paper elevation={4}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -118,28 +135,30 @@ export default function PlayerStatCompare({ playerOrder, playersData, mapId }) {
                 >
                   {columnData.name}
                   {i > 0 && (
-                    <IconButton
-                      size="small"
-                      aria-label="remove player"
-                      onClick={() => {
-                        const searchParams = new URLSearchParams(location.search)
-                        const players = searchParams.getAll('player')
-                        const remainingPlayers = players.filter(player => {
-                          return player !== columnData.profileId.toString()
-                        })
-                        searchParams.delete('player')
-                        remainingPlayers.forEach(p => {
-                          searchParams.append('player', p)
-                        })
-                        history.push({
-                          pathname: location.pathname,
-                          search: searchParams.toString(),
-                        })
-                      }}
-                      color="inherit"
-                    >
-                      <ClearIcon />
-                    </IconButton>
+                    <Tooltip title="Remove player from matchup comparison." placement="top" arrow>
+                      <IconButton
+                        size="small"
+                        aria-label="remove player"
+                        onClick={() => {
+                          const searchParams = new URLSearchParams(location.search)
+                          const players = searchParams.getAll('player')
+                          const remainingPlayers = players.filter(player => {
+                            return player !== columnData.profileId.toString()
+                          })
+                          searchParams.delete('player')
+                          remainingPlayers.forEach(p => {
+                            searchParams.append('player', p)
+                          })
+                          history.push({
+                            pathname: location.pathname,
+                            search: searchParams.toString(),
+                          })
+                        }}
+                        color="inherit"
+                      >
+                        <ClearIcon fontSize="small" color="error" />
+                      </IconButton>
+                    </Tooltip>
                   )}
                 </TableCell>
               )
@@ -156,6 +175,11 @@ export default function PlayerStatCompare({ playerOrder, playersData, mapId }) {
                   return (
                     <TableCell key={data.key} variant={variant} align={align}>
                       {data.data}
+                      {data.tooltip && (
+                        <Tooltip title={data.tooltip} placement="top" arrow>
+                          <HelpOutlineOutlinedIcon color="secondary" fontSize="small" />
+                        </Tooltip>
+                      )}
                     </TableCell>
                   )
                 })}
@@ -171,6 +195,7 @@ export default function PlayerStatCompare({ playerOrder, playersData, mapId }) {
 PlayerStatCompare.propTypes = {
   playerOrder: propTypes.arrayOf(propTypes.string).isRequired,
   playersData: propTypes.object.isRequired,
+  playersLikelyCivPick: propTypes.object.isRequired,
   mapId: propTypes.string,
 }
 
