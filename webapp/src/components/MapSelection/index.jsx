@@ -1,22 +1,21 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { Autocomplete, Card, CardContent, TextField, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import propTypes from 'prop-types'
 import aoeStrings from '../../services/aoeiv-net/aoeiv-strings.json'
 
+const sortedMaps = aoeStrings.map_type.sort((a, b) => {
+  if (a.string < b.string) {
+    return -1
+  }
+  if (a.string > b.string) {
+    return 1
+  }
+  return 0
+})
+
 export default function MapSelection({ selectFunction }) {
   const theme = useTheme()
-  const sortedMaps = useMemo(() => {
-    return aoeStrings.map_type.sort((a, b) => {
-      if (a.string < b.string) {
-        return -1
-      }
-      if (a.string > b.string) {
-        return 1
-      }
-      return 0
-    })
-  }, [aoeStrings])
 
   return (
     <Card

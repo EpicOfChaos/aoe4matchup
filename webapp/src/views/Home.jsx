@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import uniq from 'lodash/uniq'
 import { useHistory, useLocation } from 'react-router-dom'
 import Box from '@mui/material/Box'
@@ -10,6 +10,7 @@ import PlayerStatCompare from '../components/PlayerStatCompare'
 import { DEFAULT_LEADER_BOARD_ID } from '../constants/aoe4-net'
 import PlayerSearchCard from '../components/PlayerSearchCard'
 import MapSelection from '../components/MapSelection'
+import { calculateLikelyCivPick } from '../services/aoe4-matchup-stats/calculate-likely-civ-pick'
 
 async function getPlayerData(players, existingPlayersData) {
   const playerData = {}
@@ -48,6 +49,9 @@ export default function Home() {
     })
   }, [query])
 
+  const playersLikelyCivPick = useMemo(() => {
+    return calculateLikelyCivPick(playersData, mapId)
+  }, [playersData, mapId])
   return (
     <Page title="Matchup">
       <Box
@@ -77,6 +81,7 @@ export default function Home() {
           <PlayerStatCompare
             playerOrder={uniq(query.getAll('player'))}
             playersData={playersData}
+            playersLikelyCivPick={playersLikelyCivPick}
             mapId={mapId}
           />
         </Box>
