@@ -133,7 +133,7 @@ export class WebAppDeployment extends cdk.Construct {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const buildBaseDirectory: string = props.baseDirectory || props.webAppDirectory!
 
-    const dockerImage = props.dockerImage || cdk.DockerImage.fromRegistry('node16')
+    const dockerImage = props.dockerImage || cdk.DockerImage.fromRegistry('aws/codebuild/standard5.0')
 
     const deployProps: s3Deploy.BucketDeploymentProps = {
       prune: props.prune ?? true,
