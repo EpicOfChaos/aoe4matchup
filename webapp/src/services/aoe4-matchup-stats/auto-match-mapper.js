@@ -1,7 +1,7 @@
 import find from 'lodash/find'
 
 export function autoMatchMapper(profileId, matchHistory, ratingHistory) {
-  const autoMatch = matchHistory.filter((match, i) => {
+  const autoMatch = matchHistory.filter(match => {
     return match.name === 'AUTOMATCH' && match.num_players === 2
   })
 

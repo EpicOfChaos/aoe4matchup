@@ -10,7 +10,6 @@ import ClearIcon from '@mui/icons-material/Clear'
 import IconButton from '@mui/material/IconButton'
 import { useHistory, useLocation } from 'react-router-dom'
 import { TableContainer, Tooltip } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import aoeStrings from '../../services/aoeiv-net/aoeiv-strings.json'
 import CivFlag from '../CivFlag'
@@ -32,8 +31,7 @@ const civNames = aoeStrings.civ.reduce((map, obj) => {
 export default function PlayerStatCompare({ playerOrder, playersData, playersLikelyCivPick, mapId }) {
   const location = useLocation()
   const history = useHistory()
-  const theme = useTheme()
-  console.log('theme: ', theme)
+
   const { headerRow, metricRows } = useMemo(() => {
     const header = [{ key: 'header', data: '' }]
     const matchupPickRow = [
@@ -95,12 +93,14 @@ export default function PlayerStatCompare({ playerOrder, playersData, playersLik
         data: `${civNames[stats.mostRecentPlayedCiv]} (${(
           stats.civWinRates[stats.mostRecentPlayedCiv] * 100
         ).toFixed(2)}%)`,
+        civId: stats.mostRecentPlayedCiv,
       })
       mostPlayedCivRow.push({
         key: `${mostPlayedCivRow[0].key}_${profileId}`,
         data: `${civNames[stats.mostPlayedCiv]} (${(stats.civWinRates[stats.mostPlayedCiv] * 100).toFixed(
           2,
         )}%)`,
+        civId: stats.mostPlayedCiv,
       })
       if (mapId != null) {
         const { mapStats } = stats
@@ -114,6 +114,7 @@ export default function PlayerStatCompare({ playerOrder, playersData, playersLik
             data: `${civNames[mapStats[mapId].mapHighestSelectedCiv]} (${(
               mapStats[mapId].mapHighestSelectedCivSelectionRate * 100
             ).toFixed(2)}%)`,
+            civId: mapStats[mapId].mapHighestSelectedCiv,
           })
         } else {
           mapWinPctRow.push({ key: `${mapWinPctRow[0].key}_${profileId}`, data: 'NA' })
@@ -185,7 +186,13 @@ export default function PlayerStatCompare({ playerOrder, playersData, playersLik
                         {data.data}
                         {data.tooltip && (
                           <Tooltip title={data.tooltip} placement="top" arrow>
-                            <InfoOutlinedIcon color="secondary" fontSize="small" />
+                            <InfoOutlinedIcon
+                              color="secondary"
+                              fontSize="small"
+                              sx={{
+                                marginBottom: '-5px',
+                              }}
+                            />
                           </Tooltip>
                         )}
                       </TableCell>

@@ -14,6 +14,7 @@ const useStyles = makeStyles(() => ({
   civFlag: {
     width: '35px',
     marginRight: '5px',
+    marginBottom: '-4px',
   },
 }))
 

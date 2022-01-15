@@ -54,15 +54,22 @@ function App() {
   }, [mode])
 
   return (
-    <Grid direction="column">
-      <HelmetProvider context={helmetContext}>
-        <Helmet titleTemplate="%s | Age of Empires 4 - Matchup" defaultTitle="Age of Empires 4 - Matchup" />
-        <ColorModeContext.Provider value={colorMode}>
-          <ThemeProvider theme={theme}>
-            <Routes />
-          </ThemeProvider>
-        </ColorModeContext.Provider>
-      </HelmetProvider>
+    <Grid container direction="column">
+      <Grid container direction="row">
+        <Grid item xs>
+          <HelmetProvider context={helmetContext}>
+            <Helmet
+              titleTemplate="%s | Age of Empires 4 - Matchup"
+              defaultTitle="Age of Empires 4 - Matchup"
+            />
+            <ColorModeContext.Provider value={colorMode}>
+              <ThemeProvider theme={theme}>
+                <Routes />
+              </ThemeProvider>
+            </ColorModeContext.Provider>
+          </HelmetProvider>
+        </Grid>
+      </Grid>
     </Grid>
   )
 }

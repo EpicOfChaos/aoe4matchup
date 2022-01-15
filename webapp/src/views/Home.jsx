@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import uniq from 'lodash/uniq'
 import { useHistory, useLocation } from 'react-router-dom'
-import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Page from '../containers/Page'
 import { useQuery } from '../util/user-query'
@@ -55,36 +54,39 @@ export default function Home() {
   }, [playersData, mapId])
   return (
     <Page title="Matchup">
-      <Grid container>
-        <Grid item sm={6} xs={12}>
-          <PlayerSearchCard />
-        </Grid>
-        <Grid item sm={6} xs={12}>
-          <MapSelection
-            selectFunction={selectedMapId => {
-              const searchParams = new URLSearchParams(location.search)
+      <Grid container direction="column">
+        <Grid container direction="row" justifyContent="flex-start">
+          <Grid item>
+            <PlayerSearchCard />
+          </Grid>
+          <Grid item>
+            <MapSelection
+              selectFunction={selectedMapId => {
+                const searchParams = new URLSearchParams(location.search)
 
-              if (selectedMapId != null) {
-                searchParams.set('mapId', selectedMapId)
-              } else {
-                searchParams.delete('mapId')
-              }
-              history.push({
-                pathname: location.pathname,
-                search: searchParams.toString(),
-              })
-            }}
-          />
-        </Grid>
-
-        {playersData && Object.keys(playersData).length > 0 && (
-          <Grid item sm={12} xs={12}>
-            <PlayerStatCompare
-              playerOrder={uniq(query.getAll('player'))}
-              playersData={playersData}
-              playersLikelyCivPick={playersLikelyCivPick}
-              mapId={mapId}
+                if (selectedMapId != null) {
+                  searchParams.set('mapId', selectedMapId)
+                } else {
+                  searchParams.delete('mapId')
+                }
+                history.push({
+                  pathname: location.pathname,
+                  search: searchParams.toString(),
+                })
+              }}
             />
+          </Grid>
+        </Grid>
+        {playersData && Object.keys(playersData).length > 0 && (
+          <Grid container direction="row">
+            <Grid item xs={12}>
+              <PlayerStatCompare
+                playerOrder={uniq(query.getAll('player'))}
+                playersData={playersData}
+                playersLikelyCivPick={playersLikelyCivPick}
+                mapId={mapId}
+              />
+            </Grid>
           </Grid>
         )}
       </Grid>

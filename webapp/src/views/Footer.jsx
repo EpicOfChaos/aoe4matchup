@@ -11,6 +11,11 @@ function Footer() {
           Game Content Usage Rules
         </Link>
         &quot; using assets from Age of Empires IV, and it is not endorsed by or affiliated with Microsoft.
+        Special thanks to{' '}
+        <Link color="secondary" href="https://aoeiv.net/#api">
+          AoEIV.net
+        </Link>{' '}
+        for the underlying data provided.
       </Typography>
     </AppBar>
   )
