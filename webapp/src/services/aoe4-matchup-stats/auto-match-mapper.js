@@ -1,6 +1,9 @@
 import find from 'lodash/find'
 import { fromUnixTime, differenceInMinutes } from 'date-fns'
 
+function getNullSafeRating(ratingHistory, key, position) {
+  return (ratingHistory[position] && ratingHistory[position][key]) || 0
+}
 export function autoMatchMapper(profileId, matchHistory, ratingHistory) {
   // matchHistory.forEach((match, i) => {
   //   // eslint-disable-next-line no-param-reassign
@@ -33,25 +36,29 @@ export function autoMatchMapper(profileId, matchHistory, ratingHistory) {
     })
 
     if (
-      ratingHistory[i + offset].rating === ratingHistory[i + offset + 1].rating ||
+      getNullSafeRating(ratingHistory, 'rating', i + offset) ===
+        getNullSafeRating(ratingHistory, 'rating', i + offset + 1) ||
       differenceInMinutes(fromUnixTime(ratingHistory[i + offset].timestamp), fromUnixTime(match.started)) >
         300
     ) {
       // console.log('Adding offset', [
-      //   ratingHistory[i + offset].rating,
-      //   ratingHistory[i + offset + 1].rating,
-      //   differenceInMinutes(fromUnixTime(ratingHistory[i + offset].timestamp), fromUnixTime(match.started)),
+      // ratingHistory[i + offset].rating,
+      // ratingHistory[i + offset + 1].rating,
+      // differenceInMinutes(fromUnixTime(ratingHistory[i + offset].timestamp), fromUnixTime(match.started)),
       // ])
       offset += 1
     }
     if (
-      differenceInMinutes(fromUnixTime(ratingHistory[i + offset].timestamp), fromUnixTime(match.started)) < 0
+      differenceInMinutes(
+        fromUnixTime(getNullSafeRating(ratingHistory, 'timestamp', i + offset)),
+        fromUnixTime(match.started),
+      ) < 0
     ) {
       // console.log('minus 1')
       offset -= 1
     }
     const duration = differenceInMinutes(
-      fromUnixTime(ratingHistory[i + offset].timestamp),
+      fromUnixTime(getNullSafeRating(ratingHistory, 'timestamp', i + offset)),
       fromUnixTime(match.started),
     )
     // console.log(`matchId: ${match.match_id} ${i + offset} duration: ${duration}`)
@@ -62,8 +69,8 @@ export function autoMatchMapper(profileId, matchHistory, ratingHistory) {
       opponentCivId: opponentPlayer.civ,
       durationInMinutes: duration,
       victory:
-        ((ratingHistory[i + offset] && ratingHistory[i + offset].num_wins) || 0) >
-        ((ratingHistory[i + offset + 1] && ratingHistory[i + offset + 1].num_wins) || 0),
+        getNullSafeRating(ratingHistory, 'num_wins', i + offset) >
+        getNullSafeRating(ratingHistory, 'num_wins', i + offset + 1),
     }
   })
 }
