@@ -44,16 +44,28 @@ export default function PlayerStatCompare({ playerOrder, playersData, playersLik
     const rankRow = [{ key: 'rank', data: 'Rank' }]
     const ratingRow = [{ key: 'rating', data: 'Rating (Highest Rating)' }]
     const winPctRow = [{ key: 'win_pct', data: 'Win %' }]
+    const avgDurationRow = [{ key: 'avg_duration', data: 'Avg Game Duration' }]
     const lastPlayedCivRow = [{ key: 'last_civ', data: 'Last Played Civ (Win %)' }]
     const mostPlayedCivRow = [{ key: 'most_civ', data: 'Most Played Civ (Win %)' }]
-    const tableRows = [matchupPickRow, rankRow, ratingRow, winPctRow, lastPlayedCivRow, mostPlayedCivRow]
+    const tableRows = [
+      matchupPickRow,
+      rankRow,
+      ratingRow,
+      winPctRow,
+      avgDurationRow,
+      lastPlayedCivRow,
+      mostPlayedCivRow,
+    ]
     const mapWinPctRow = []
     const mapCivWinPctRow = []
+    const mapAvgDurationRow = []
     if (mapId != null) {
       const mapName = mapNames[mapId]
       mapWinPctRow.push({ key: 'map_win_pct', data: `${mapName} Win %` })
+      mapAvgDurationRow.push({ key: 'map_avg_duration', data: `${mapName} Avg Game Duration` })
       mapCivWinPctRow.push({ key: 'map_civ_sel_pct', data: `${mapName} Most Selected Civ (Select %)` })
       tableRows.push(mapWinPctRow)
+      tableRows.push(mapAvgDurationRow)
       tableRows.push(mapCivWinPctRow)
     }
 
@@ -88,6 +100,10 @@ export default function PlayerStatCompare({ playerOrder, playersData, playersLik
         key: `${winPctRow[0].key}_${profileId}`,
         data: `${((playerLadder.wins / playerLadder.games) * 100).toFixed(2)}%`,
       })
+      avgDurationRow.push({
+        key: `${avgDurationRow[0].key}_${profileId}`,
+        data: `${Math.round(stats.avgDuration)} minutes`,
+      })
       lastPlayedCivRow.push({
         key: `${lastPlayedCivRow[0].key}_${profileId}`,
         data: `${civNames[stats.mostRecentPlayedCiv]} (${(
@@ -108,6 +124,10 @@ export default function PlayerStatCompare({ playerOrder, playersData, playersLik
           mapWinPctRow.push({
             key: `${mapWinPctRow[0].key}_${profileId}`,
             data: `${(mapStats[mapId].mapWinRate * 100).toFixed(2)}%`,
+          })
+          mapAvgDurationRow.push({
+            key: `${mapAvgDurationRow[0].key}_${profileId}`,
+            data: `${Math.round(mapStats[mapId].mapAvgDuration)} minutes`,
           })
           mapCivWinPctRow.push({
             key: `${mapCivWinPctRow[0].key}_${profileId}`,

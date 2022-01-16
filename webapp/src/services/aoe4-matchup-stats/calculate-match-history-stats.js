@@ -4,6 +4,8 @@ import { autoMatchMapper } from './auto-match-mapper'
 import { groupByWinRate } from './group-by-win-rate'
 import { civSelectionRate } from './civ-selection-rate'
 import { winRate } from './win-rate'
+import { groupByAvgDuration } from './group-by-avg-duration'
+import { avgDuration } from './avg-duration'
 
 export function calculateMatchHistoryStats(profileId, matchHistory, ratingHistory) {
   const autoMatchHistory = autoMatchMapper(profileId, matchHistory, ratingHistory)
@@ -13,6 +15,7 @@ export function calculateMatchHistoryStats(profileId, matchHistory, ratingHistor
   })
 
   const mapWinRates = groupByWinRate(mapGrouped)
+  const mapAvgDurations = groupByAvgDuration(mapGrouped)
 
   const civPlayCounts = countBy(autoMatchHistory, match => {
     return match.civId
@@ -23,6 +26,7 @@ export function calculateMatchHistoryStats(profileId, matchHistory, ratingHistor
   })
 
   const civWinRates = groupByWinRate(civGrouped)
+  const civAvgDurations = groupByAvgDuration(civGrouped)
 
   const mapCivSelectionRates = civSelectionRate(mapGrouped)
 
@@ -42,8 +46,11 @@ export function calculateMatchHistoryStats(profileId, matchHistory, ratingHistor
 
   return {
     winRate: winRate(autoMatchHistory),
+    avgDuration: avgDuration(autoMatchHistory),
     mapWinRates,
+    mapAvgDurations,
     civWinRates,
+    civAvgDurations,
     mapCivSelectionRates,
     opponentCivWinRates,
     mostRecentCiv: autoMatchHistory[0].civId,

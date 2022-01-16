@@ -5,6 +5,7 @@ import {
   DEFAULT_LEADERBOARD_COUNT,
   GAME_ID,
   HISTORY_COUNT,
+  MATCH_HISTORY_COUNT,
 } from '../../constants/aoe4-net'
 
 let client
@@ -47,12 +48,13 @@ export async function getLeaderBoard(leaderBoardId, count = DEFAULT_LEADERBOARD_
   return data
 }
 
-export async function getMatchHistory(profileId) {
+export async function getMatchHistory(profileId, start = 0) {
   const { data } = await getApiClient().get('/player/matches', {
     params: {
       game: GAME_ID,
       language: DEFAULT_LANGUAGE,
-      count: HISTORY_COUNT,
+      count: MATCH_HISTORY_COUNT,
+      start,
       profile_id: profileId,
     },
   })
