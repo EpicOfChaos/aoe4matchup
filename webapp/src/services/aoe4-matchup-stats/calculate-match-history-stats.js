@@ -1,14 +1,16 @@
 import groupBy from 'lodash/groupBy'
 import countBy from 'lodash/countBy'
-import { autoMatchMapper } from './auto-match-mapper'
 import { groupByWinRate } from './group-by-win-rate'
 import { civSelectionRate } from './civ-selection-rate'
 import { winRate } from './win-rate'
 import { groupByAvgDuration } from './group-by-avg-duration'
 import { avgDuration } from './avg-duration'
+import { ratingHistoryMapping } from './rating-history-mapping'
+import { autoMatcherV2 } from './auto-matcher-v2'
 
 export function calculateMatchHistoryStats(profileId, matchHistory, ratingHistory) {
-  const autoMatchHistory = autoMatchMapper(profileId, matchHistory, ratingHistory)
+  const mappedRatingHistory = ratingHistoryMapping(ratingHistory)
+  const autoMatchHistory = autoMatcherV2(profileId, matchHistory, mappedRatingHistory)
 
   const mapGrouped = groupBy(autoMatchHistory, match => {
     return match.mapId
@@ -30,12 +32,6 @@ export function calculateMatchHistoryStats(profileId, matchHistory, ratingHistor
 
   const mapCivSelectionRates = civSelectionRate(mapGrouped)
 
-  const opponentCivWinRates = groupByWinRate(
-    groupBy(autoMatchHistory, match => {
-      return match.opponentCivId
-    }),
-  )
-
   const mostPlayedCiv = Object.keys(civPlayCounts).reduce((a, b) => {
     if (civPlayCounts[a] > civPlayCounts[b]) {
       return a
@@ -52,7 +48,6 @@ export function calculateMatchHistoryStats(profileId, matchHistory, ratingHistor
     civWinRates,
     civAvgDurations,
     mapCivSelectionRates,
-    opponentCivWinRates,
     mostRecentCiv: autoMatchHistory[0].civId,
     civPlayCounts,
     mostPlayedCiv,

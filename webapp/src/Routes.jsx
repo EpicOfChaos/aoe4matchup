@@ -12,7 +12,7 @@ import Leaderboard from './views/Leaderboard'
 
 const useStyles = makeStyles(() => ({
   root: {
-    height: '100%',
+    height: '100vh',
   },
 }))
 
