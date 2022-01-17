@@ -32,13 +32,16 @@ export function calculateMatchHistoryStats(profileId, matchHistory, ratingHistor
 
   const mapCivSelectionRates = civSelectionRate(mapGrouped)
 
-  const mostPlayedCiv = Object.keys(civPlayCounts).reduce((a, b) => {
-    if (civPlayCounts[a] > civPlayCounts[b]) {
-      return a
-    }
+  const mostPlayedCiv =
+    (Object.keys(civPlayCounts).length > 0 &&
+      Object.keys(civPlayCounts).reduce((a, b) => {
+        if (civPlayCounts[a] > civPlayCounts[b]) {
+          return a
+        }
 
-    return b
-  })
+        return b
+      })) ||
+    null
 
   return {
     winRate: winRate(autoMatchHistory),
@@ -48,7 +51,7 @@ export function calculateMatchHistoryStats(profileId, matchHistory, ratingHistor
     civWinRates,
     civAvgDurations,
     mapCivSelectionRates,
-    mostRecentCiv: autoMatchHistory[0].civId,
+    mostRecentCiv: (autoMatchHistory[0] && autoMatchHistory[0].civId) || null,
     civPlayCounts,
     mostPlayedCiv,
   }

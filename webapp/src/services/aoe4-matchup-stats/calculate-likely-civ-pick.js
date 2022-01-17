@@ -5,7 +5,7 @@ export function calculateLikelyCivPick(playersData, mapId) {
     const { stats } = playersData[profileId]
     const { mostRecentPlayedCiv, mostPlayedCiv } = stats
     let mostLikelyCiv = null
-    if (mapId != null) {
+    if (mapId != null && stats.mapStats[mapId]) {
       const { mapHighestSelectedCiv, mapHighestSelectedCivSelectionRate } = stats.mapStats[mapId]
       if (
         mapHighestSelectedCivSelectionRate > 0.55 ||

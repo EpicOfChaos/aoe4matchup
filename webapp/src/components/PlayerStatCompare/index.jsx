@@ -138,6 +138,7 @@ export default function PlayerStatCompare({ playerOrder, playersData, playersLik
           })
         } else {
           mapWinPctRow.push({ key: `${mapWinPctRow[0].key}_${profileId}`, data: 'NA' })
+          mapAvgDurationRow.push({ key: `${mapAvgDurationRow[0].key}_${profileId}`, data: 'NA' })
           mapCivWinPctRow.push({ key: `${mapCivWinPctRow[0].key}_${profileId}`, data: 'NA' })
         }
       }
