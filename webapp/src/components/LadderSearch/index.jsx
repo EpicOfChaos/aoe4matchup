@@ -5,22 +5,21 @@ import propTypes from 'prop-types'
 import debounce from 'lodash/debounce'
 import { useHistory, useLocation } from 'react-router-dom'
 import { getLeaderBoard } from '../../services/aoeiv-net/client'
-import { DEFAULT_LEADER_BOARD_ID } from '../../constants/aoe4-net'
 
-const fetchSearch = async (query, cb) => {
-  const res = await getLeaderBoard(DEFAULT_LEADER_BOARD_ID, 25, query)
+const fetchSearch = async (ladderId, query, cb) => {
+  const res = await getLeaderBoard(ladderId, 25, query)
   cb(res.leaderboard)
 }
 
-const debouncedFetchData = debounce((query, cb) => {
+const debouncedFetchData = debounce((ladderId, query, cb) => {
   if (query) {
-    fetchSearch(query, cb)
+    fetchSearch(ladderId, query, cb)
   } else {
     cb([])
   }
 }, 500)
 
-export default function LadderSearch({ searchIconPadding }) {
+export default function LadderSearch({ ladderId, searchIconPadding }) {
   const location = useLocation()
   const theme = useTheme()
   const history = useHistory()
@@ -28,10 +27,10 @@ export default function LadderSearch({ searchIconPadding }) {
   const [searchResults, setSearchResults] = useState([])
 
   useEffect(() => {
-    debouncedFetchData(searchQuery, res => {
+    debouncedFetchData(ladderId, searchQuery, res => {
       setSearchResults(res)
     })
-  }, [searchQuery])
+  }, [searchQuery, ladderId])
 
   return (
     <Autocomplete
@@ -77,6 +76,7 @@ export default function LadderSearch({ searchIconPadding }) {
 }
 
 LadderSearch.propTypes = {
+  ladderId: propTypes.string.isRequired,
   searchIconPadding: propTypes.string,
 }
 

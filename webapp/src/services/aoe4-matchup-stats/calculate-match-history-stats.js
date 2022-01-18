@@ -8,9 +8,9 @@ import { avgDuration } from './avg-duration'
 import { ratingHistoryMapping } from './rating-history-mapping'
 import { autoMatcherV2 } from './auto-matcher-v2'
 
-export function calculateMatchHistoryStats(profileId, matchHistory, ratingHistory) {
+export function calculateMatchHistoryStats(profileId, matchHistory, ratingHistory, ladderId) {
   const mappedRatingHistory = ratingHistoryMapping(ratingHistory)
-  const autoMatchHistory = autoMatcherV2(profileId, matchHistory, mappedRatingHistory)
+  const autoMatchHistory = autoMatcherV2(profileId, matchHistory, mappedRatingHistory, ladderId)
 
   const mapGrouped = groupBy(autoMatchHistory, match => {
     return match.mapId

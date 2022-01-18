@@ -1,11 +1,17 @@
 import find from 'lodash/find'
 import { differenceInMinutes, fromUnixTime } from 'date-fns'
 import { OutcomeEnum } from './outcome.enum'
+import ladderOptions from '../aoeiv-net/aoeiv-ladder-strings.json'
 
-export function autoMatcherV2(profileId, matchHistory, ratingHistory) {
+export function autoMatcherV2(profileId, matchHistory, ratingHistory, ladderId) {
+  const ladder = ladderOptions[ladderId]
   const autoMatches = matchHistory.filter(match => {
-    return match.name === 'AUTOMATCH' && match.num_players === 2
+    return match.name === ladder.gameType && match.num_players === ladder.numPlayers
   })
+
+  if (autoMatches.length === 0 || ratingHistory.length === 0) {
+    return []
+  }
 
   // The rating history can be delayed, if you are in a middle of a game you need to ignore first few games.
   while (ratingHistory[0].timestamp < autoMatches[0].started) {

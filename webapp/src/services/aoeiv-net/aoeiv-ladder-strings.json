@@ -1,0 +1,26 @@
+{
+  "17": {
+    "id": "17",
+    "label": "QM 1v1",
+    "gameType": "AUTOMATCH",
+    "numPlayers": 2
+  },
+  "18": {
+    "id": "18",
+    "label": "QM 2v2",
+    "gameType": "AUTOMATCH",
+    "numPlayers": 4
+  },
+  "19": {
+    "id": "19",
+    "label": "QM 3v3",
+    "gameType": "AUTOMATCH",
+    "numPlayers": 6
+  },
+  "20": {
+    "id": "20",
+    "label": "QM 4v4",
+    "gameType": "AUTOMATCH",
+    "numPlayers": 8
+  }
+}

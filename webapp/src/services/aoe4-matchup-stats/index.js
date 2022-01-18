@@ -1,8 +1,8 @@
 import { calculateMatchHistoryStats } from './calculate-match-history-stats'
 import aoeStrings from '../aoeiv-net/aoeiv-strings.json'
 
-export function calculateStats(profileId, matchHistory, playerRating) {
-  const playerMatchHistoryStats = calculateMatchHistoryStats(profileId, matchHistory, playerRating)
+export function calculateStats(profileId, matchHistory, playerRating, ladderId) {
+  const playerMatchHistoryStats = calculateMatchHistoryStats(profileId, matchHistory, playerRating, ladderId)
   const playerStatistics = {
     winRate: playerMatchHistoryStats.winRate,
     avgDuration: playerMatchHistoryStats.avgDuration,

@@ -3,9 +3,10 @@ import { Card, CardContent, Tooltip, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
+import propTypes from 'prop-types'
 import LadderSearch from '../LadderSearch'
 
-export default function PlayerSearchCard() {
+export default function PlayerSearchCard({ ladderId }) {
   const theme = useTheme()
   return (
     <Card
@@ -32,8 +33,12 @@ export default function PlayerSearchCard() {
             <InfoOutlinedIcon color="secondary" fontSize="small" />
           </Tooltip>
         </Typography>
-        <LadderSearch />
+        <LadderSearch ladderId={ladderId} />
       </CardContent>
     </Card>
   )
+}
+
+PlayerSearchCard.propTypes = {
+  ladderId: propTypes.string.isRequired,
 }

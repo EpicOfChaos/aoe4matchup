@@ -1,8 +1,8 @@
 export function calculateLikelyCivPick(playersData, mapId) {
   const playersLikelyCivPick = {}
-  const profileIds = Object.keys(playersData)
-  for (const profileId of profileIds) {
-    const { stats } = playersData[profileId]
+  const profileKeys = Object.keys(playersData)
+  for (const profileKey of profileKeys) {
+    const { stats } = playersData[profileKey]
     const { mostRecentPlayedCiv, mostPlayedCiv } = stats
     let mostLikelyCiv = null
     if (mapId != null && stats.mapStats[mapId]) {
@@ -19,7 +19,7 @@ export function calculateLikelyCivPick(playersData, mapId) {
       mostLikelyCiv = mostRecentPlayedCiv
     }
 
-    playersLikelyCivPick[profileId] = mostLikelyCiv
+    playersLikelyCivPick[profileKey] = mostLikelyCiv
   }
   return playersLikelyCivPick
 }

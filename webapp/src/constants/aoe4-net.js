@@ -3,4 +3,4 @@ export const DEFAULT_LANGUAGE = 'en'
 export const HISTORY_COUNT = 1000
 export const MATCH_HISTORY_COUNT = 100
 export const DEFAULT_LEADERBOARD_COUNT = 100
-export const DEFAULT_LEADER_BOARD_ID = 17
+export const DEFAULT_LEADER_BOARD_ID = '17'

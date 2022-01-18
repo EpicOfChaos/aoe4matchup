@@ -30,5 +30,5 @@ export default function CivFlag({ civId }) {
 }
 
 CivFlag.propTypes = {
-  civId: propTypes.number.isRequired,
+  civId: propTypes.string.isRequired,
 }
