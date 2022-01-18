@@ -4,7 +4,7 @@ import AppBar from '@mui/material/AppBar'
 
 function Footer() {
   return (
-    <AppBar position="fixed" color="primary" sx={{ padding: '20px', top: 'auto', bottom: 0 }}>
+    <AppBar position="relative" color="primary" sx={{ padding: '20px' }}>
       <Typography variant="body2">
         AoE4matchup.com was created under Microsoft&apos;s &quot;
         <Link color="secondary" href="https://www.xbox.com/en-US/developers/rules">

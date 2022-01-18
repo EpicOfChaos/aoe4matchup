@@ -24,7 +24,6 @@ export default function MapSelection({ selectFunction }) {
       sx={{
         width: '280px',
         marginBottom: theme.spacing(2),
-        marginRight: theme.spacing(2),
       }}
       elevation={4}
     >
