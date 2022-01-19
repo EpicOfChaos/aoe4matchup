@@ -51,7 +51,7 @@ export function calculateMatchHistoryStats(profileId, matchHistory, ratingHistor
     civWinRates,
     civAvgDurations,
     mapCivSelectionRates,
-    mostRecentCiv: (autoMatchHistory[0] && autoMatchHistory[0].civId) || null,
+    mostRecentCiv: autoMatchHistory[0] ? autoMatchHistory[0].civId : null,
     civPlayCounts,
     mostPlayedCiv,
   }

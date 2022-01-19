@@ -51,11 +51,13 @@ export function autoMatcherV2(profileId, matchHistory, ratingHistory, ladderId) 
 
     if (autoMatch.started > rating.timestamp) {
       ratingPos -= 1
+      // console.log('missing match')
       // eslint-disable-next-line no-continue
       continue
     }
     const duration = differenceInMinutes(fromUnixTime(rating.timestamp), fromUnixTime(autoMatch.started))
     if (duration > 180) {
+      // console.log('missing rating')
       autoMatchPos -= 1
       // eslint-disable-next-line no-continue
       continue
