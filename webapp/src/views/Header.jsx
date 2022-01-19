@@ -87,10 +87,25 @@ export default function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="primary">
         <Toolbar>
+          <img
+            src="logo192.png"
+            alt="aoe4matchup logo"
+            width="80px"
+            style={{
+              marginRight: '20px',
+            }}
+          />
           {/*<IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>*/}
           {/*  <MenuIcon />*/}
           {/*</IconButton>*/}
-          <Typography variant="h6" noWrap component="div">
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{
+              display: { xs: 'none', md: 'block' },
+            }}
+          >
             Age of Empires 4 - Matchup
           </Typography>
           {/*<Search>*/}

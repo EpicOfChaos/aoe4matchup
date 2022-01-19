@@ -9,8 +9,9 @@ import TableBody from '@mui/material/TableBody'
 import ClearIcon from '@mui/icons-material/Clear'
 import IconButton from '@mui/material/IconButton'
 import { useHistory, useLocation } from 'react-router-dom'
-import { Alert, TableContainer, Tooltip } from '@mui/material'
+import { Alert, Link, TableContainer, Tooltip } from '@mui/material'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import aoeStrings from '../../services/aoeiv-net/aoeiv-strings.json'
 import CivFlag from '../CivFlag'
 import { playerKey } from '../../constants/player-key'
@@ -185,32 +186,42 @@ export default function PlayerStatCompare({
                   }
                   return (
                     <TableCell sx={styles} key={columnData.key}>
-                      {columnData.name}
                       {i > 0 && (
-                        <Tooltip title="Remove player from matchup comparison." placement="top" arrow>
-                          <IconButton
-                            size="small"
-                            aria-label="remove player"
-                            onClick={() => {
-                              const searchParams = new URLSearchParams(location.search)
-                              const players = searchParams.getAll('player')
-                              const remainingPlayers = players.filter(player => {
-                                return player !== columnData.profileId.toString()
-                              })
-                              searchParams.delete('player')
-                              remainingPlayers.forEach(p => {
-                                searchParams.append('player', p)
-                              })
-                              history.push({
-                                pathname: location.pathname,
-                                search: searchParams.toString(),
-                              })
-                            }}
-                            color="inherit"
-                          >
-                            <ClearIcon fontSize="small" color="error" />
-                          </IconButton>
-                        </Tooltip>
+                        <>
+                          <Tooltip title="View player on aoe4analytics.com" placement="top" arrow>
+                            <Link
+                              href={`https://www.aoe4analytics.com/profile/${columnData.profileId}`}
+                              target="_blank"
+                            >
+                              {columnData.name}
+                              <OpenInNewIcon fontSize="small" aria-label="View player on aoe4analytics.com" />
+                            </Link>
+                          </Tooltip>
+                          <Tooltip title="Remove player from matchup comparison." placement="top" arrow>
+                            <IconButton
+                              size="small"
+                              aria-label="remove player"
+                              onClick={() => {
+                                const searchParams = new URLSearchParams(location.search)
+                                const players = searchParams.getAll('player')
+                                const remainingPlayers = players.filter(player => {
+                                  return player !== columnData.profileId.toString()
+                                })
+                                searchParams.delete('player')
+                                remainingPlayers.forEach(p => {
+                                  searchParams.append('player', p)
+                                })
+                                history.push({
+                                  pathname: location.pathname,
+                                  search: searchParams.toString(),
+                                })
+                              }}
+                              color="inherit"
+                            >
+                              <ClearIcon fontSize="small" color="error" />
+                            </IconButton>
+                          </Tooltip>
+                        </>
                       )}
                     </TableCell>
                   )
