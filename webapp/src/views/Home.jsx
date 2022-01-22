@@ -15,8 +15,10 @@ import { calculateLikelyCivPick } from '../services/aoe4-matchup-stats/calculate
 import LadderSelect from '../components/LadderSelect'
 import { playerKey } from '../constants/player-key'
 import ladderOptions from '../services/aoeiv-net/aoeiv-ladder-strings.json'
+import timeframeOptions from '../constants/timeframe-periods.json'
+import TimeframeSelect from '../components/TimeframeSelect'
 
-async function getPlayerData(ladderId, players, existingPlayersData) {
+async function getPlayerData(ladderId, players, existingPlayersData, timeframeId) {
   const playerData = {}
   for (const player of players) {
     if (existingPlayersData[playerKey(ladderId, player)]) {
@@ -55,6 +57,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [mapId, setMapId] = useState(null)
   const [ladder, setLadder] = useState(ladderOptions[DEFAULT_LEADER_BOARD_ID])
+  const [timeframe, setTimeframe] = useState(timeframeOptions[0])
   useEffect(() => {
     const players = uniq(query.getAll('player'))
     const map = query.get('mapId')
@@ -65,9 +68,16 @@ export default function Home() {
       ladderId = ladder.id
     }
 
+    let timeframeId = query.get('timeframeId')
+    if(timeframeId != null){
+      setTimeframe(timeframeOptions[timeframeId])
+    }else{
+      timeframeId = timeframe.id
+    }
+
     setMapId(map)
     setLoading(true)
-    getPlayerData(ladderId, players, playersData).then(data => {
+    getPlayerData(ladderId, players, playersData, timeframeId).then(data => {
       setPlayersData(data)
       setLoading(false)
     })
@@ -79,7 +89,7 @@ export default function Home() {
   return (
     <Page title="Matchup">
       <Grid container direction="column">
-        <Grid container direction="row" justifyContent="flex-start">
+        <Grid container direction="row" justifyContent="space-evenly">
           <Grid item>
             <LadderSelect
               ladder={ladder}
@@ -117,6 +127,9 @@ export default function Home() {
                 })
               }}
             />
+          </Grid>
+          <Grid item>
+            <TimeframeSelect timeframe={timeframe} selectFunction={} />
           </Grid>
         </Grid>
         {loading ? (

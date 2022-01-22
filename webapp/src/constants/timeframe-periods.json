@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "All Time",
+    "period": null
+  },
+  {
+    "id": 2,
+    "name": "Last Day",
+    "period": "P1D"
+  },
+  {
+    "id": 3,
+    "name": "Last Week",
+    "period": "P1W"
+  },
+  {
+    "id": 4,
+    "name": "Last Month",
+    "period": "P1M"
+  }
+]

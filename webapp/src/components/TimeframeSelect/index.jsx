@@ -1,12 +1,12 @@
 import React from 'react'
-import { useTheme } from '@mui/material/styles'
-import { Autocomplete, Card, CardContent, TextField, Tooltip, Typography } from '@mui/material'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import MilitaryTechIcon from '@mui/icons-material/MilitaryTech'
 import propTypes from 'prop-types'
-import ladderOptions from '../../services/aoeiv-net/aoeiv-ladder-strings.json'
+import { Autocomplete, Card, CardContent, TextField, Tooltip, Typography } from '@mui/material'
+import AccessTimeIcon from '@mui/icons-material/AccessTime'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { useTheme } from '@mui/material/styles'
+import timeframeOptions from '../../constants/timeframe-periods.json'
 
-export default function LadderSelect({ ladder, selectFunction }) {
+export default function TimeframeSelect({ timeframe, selectFunction }) {
   const theme = useTheme()
 
   return (
@@ -14,7 +14,6 @@ export default function LadderSelect({ ladder, selectFunction }) {
       sx={{
         // width: '260px',
         marginBottom: theme.spacing(2),
-        // marginRight: theme.spacing(2),
       }}
       elevation={4}
     >
@@ -24,28 +23,28 @@ export default function LadderSelect({ ladder, selectFunction }) {
           color="text.primary"
           gutterBottom
         >
-          <MilitaryTechIcon fontSize="large" color="primary" />
-          Select Ladder
-          <Tooltip title="Select the ladder data you want to use for the statistics." placement="top" arrow>
+          <AccessTimeIcon fontSize="large" color="primary" />
+          Select Timeframe
+          <Tooltip title="Select a timeframe to compare specific statistics." placement="top" arrow>
             <InfoOutlinedIcon color="secondary" fontSize="small" />
           </Tooltip>
         </Typography>
         <Autocomplete
-          value={ladder}
-          getOptionLabel={option => option.label}
-          options={Object.values(ladderOptions)}
+          value={timeframe}
+          getOptionLabel={option => option.name}
+          options={timeframeOptions}
           onChange={(event, newValue) => {
-            let newLadderId = null
+            let newTimeframeId = null
             if (newValue && newValue.id != null) {
-              newLadderId = newValue.id
+              newTimeframeId = newValue.id
             }
-            selectFunction(newLadderId)
+            selectFunction(newTimeframeId)
           }}
           renderInput={params => (
             <TextField
               {...params}
               fullWidth
-              placeholder="select ladder"
+              placeholder="select timeframe"
               sx={{
                 color: 'inherit',
                 width: '230px',
@@ -62,7 +61,7 @@ export default function LadderSelect({ ladder, selectFunction }) {
   )
 }
 
-LadderSelect.propTypes = {
-  ladder: propTypes.object.isRequired,
+TimeframeSelect.propTypes = {
+  timeframe: propTypes.object.isRequired,
   selectFunction: propTypes.func.isRequired,
 }
