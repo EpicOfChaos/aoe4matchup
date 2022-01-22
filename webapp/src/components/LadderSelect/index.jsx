@@ -12,9 +12,9 @@ export default function LadderSelect({ ladder, selectFunction }) {
   return (
     <Card
       sx={{
-        width: '280px',
+        // width: '260px',
         marginBottom: theme.spacing(2),
-        marginRight: theme.spacing(2),
+        // marginRight: theme.spacing(2),
       }}
       elevation={4}
     >
@@ -32,12 +32,6 @@ export default function LadderSelect({ ladder, selectFunction }) {
         </Typography>
         <Autocomplete
           value={ladder}
-          // isOptionEqualToValue={(option, value) => {
-          //   console.log(
-          //     `option: ${JSON.stringify(option)} value: ${value} result:${option.id === value.toString()}`,
-          //   )
-          //   return option.id === value.toString()
-          // }}
           getOptionLabel={option => option.label}
           options={Object.values(ladderOptions)}
           onChange={(event, newValue) => {
@@ -54,7 +48,7 @@ export default function LadderSelect({ ladder, selectFunction }) {
               placeholder="select ladder"
               sx={{
                 color: 'inherit',
-                width: '250px',
+                width: '230px',
                 '& .MuiOutlinedInput-root': {
                   color: 'inherit',
                   padding: theme.spacing(1, 1, 1, 0),

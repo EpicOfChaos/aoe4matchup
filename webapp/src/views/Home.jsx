@@ -5,42 +5,44 @@ import Grid from '@mui/material/Grid'
 import { CircularProgress } from '@mui/material'
 import Page from '../containers/Page'
 import { useQuery } from '../util/user-query'
-import { getLeaderBoardForPlayer, getMatchHistory, getPlayerRating } from '../services/aoeiv-net/client'
+import { getLeaderBoardForPlayer } from '../services/aoeiv-net/client'
 import { calculateStats } from '../services/aoe4-matchup-stats'
 import PlayerStatCompare from '../components/PlayerStatCompare'
-import { DEFAULT_LEADER_BOARD_ID, MATCH_HISTORY_COUNT } from '../constants/aoe4-net'
+import { DEFAULT_LEADER_BOARD_ID } from '../constants/aoe4-net'
 import PlayerSearchCard from '../components/PlayerSearchCard'
 import MapSelection from '../components/MapSelection'
 import { calculateLikelyCivPick } from '../services/aoe4-matchup-stats/calculate-likely-civ-pick'
 import LadderSelect from '../components/LadderSelect'
 import { playerKey } from '../constants/player-key'
 import ladderOptions from '../services/aoeiv-net/aoeiv-ladder-strings.json'
+import timeframeOptions from '../constants/timeframe-periods.json'
+import TimeframeSelect from '../components/TimeframeSelect'
+import { getMatchHistoryConcurrently } from '../util/get-match-history-concurrently'
+import { getPlayerRatingConcurrently } from '../util/get-player-rating-concurrently'
 
-async function getPlayerData(ladderId, players, existingPlayersData) {
+async function getPlayerData(ladderId, players, existingPlayersData, timeframeId) {
   const playerData = {}
   for (const player of players) {
     if (existingPlayersData[playerKey(ladderId, player)]) {
-      playerData[playerKey(ladderId, player)] = existingPlayersData[playerKey(ladderId, player)]
+      const existingData = existingPlayersData[playerKey(ladderId, player)]
+      existingData.stats = calculateStats(
+        player,
+        existingData.matchHistory,
+        existingData.playerRating,
+        ladderId,
+        timeframeId,
+      )
+      playerData[playerKey(ladderId, player)] = existingData
     } else {
-      const [matchHistory, playerRating, playerLadder] = await Promise.all([
-        getMatchHistory(player),
-        getPlayerRating(player, ladderId),
-        getLeaderBoardForPlayer(ladderId, player),
-      ])
-      if (matchHistory.length === MATCH_HISTORY_COUNT) {
-        let start = MATCH_HISTORY_COUNT
-        let moreMatchHistory = []
-        do {
-          moreMatchHistory = await getMatchHistory(player, start)
-          matchHistory.push(...moreMatchHistory)
-          start += MATCH_HISTORY_COUNT
-        } while (moreMatchHistory.length === MATCH_HISTORY_COUNT)
-      }
+      const playerLadder = await getLeaderBoardForPlayer(ladderId, player)
+      const matchHistory = await getMatchHistoryConcurrently(player, playerLadder)
+      const playerRating = await getPlayerRatingConcurrently(player, ladderId, playerLadder)
+
       playerData[playerKey(ladderId, player)] = {
         matchHistory,
         playerRating,
         playerLadder,
-        stats: calculateStats(player, matchHistory, playerRating, ladderId),
+        stats: calculateStats(player, matchHistory, playerRating, ladderId, timeframeId),
       }
     }
   }
@@ -55,6 +57,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [mapId, setMapId] = useState(null)
   const [ladder, setLadder] = useState(ladderOptions[DEFAULT_LEADER_BOARD_ID])
+  const [timeframe, setTimeframe] = useState(timeframeOptions['1'])
   useEffect(() => {
     const players = uniq(query.getAll('player'))
     const map = query.get('mapId')
@@ -65,9 +68,16 @@ export default function Home() {
       ladderId = ladder.id
     }
 
+    let timeframeId = query.get('timeframeId')
+    if (timeframeId != null) {
+      setTimeframe(timeframeOptions[timeframeId])
+    } else {
+      timeframeId = timeframe.id
+    }
+
     setMapId(map)
     setLoading(true)
-    getPlayerData(ladderId, players, playersData).then(data => {
+    getPlayerData(ladderId, players, playersData, timeframeId).then(data => {
       setPlayersData(data)
       setLoading(false)
     })
@@ -79,7 +89,7 @@ export default function Home() {
   return (
     <Page title="Matchup">
       <Grid container direction="column">
-        <Grid container direction="row" justifyContent="flex-start">
+        <Grid container direction="row" justifyContent="space-evenly">
           <Grid item>
             <LadderSelect
               ladder={ladder}
@@ -118,6 +128,24 @@ export default function Home() {
               }}
             />
           </Grid>
+          <Grid item>
+            <TimeframeSelect
+              timeframe={timeframe}
+              selectFunction={selectedTimeframeId => {
+                const searchParams = new URLSearchParams(location.search)
+
+                if (selectedTimeframeId != null) {
+                  searchParams.set('timeframeId', selectedTimeframeId)
+                } else {
+                  searchParams.delete('timeframeId')
+                }
+                history.push({
+                  pathname: location.pathname,
+                  search: searchParams.toString(),
+                })
+              }}
+            />
+          </Grid>
         </Grid>
         {loading ? (
           <Grid container direction="row">
@@ -136,6 +164,7 @@ export default function Home() {
                   playersLikelyCivPick={playersLikelyCivPick}
                   mapId={mapId}
                   ladderId={ladder.id}
+                  timeframeId={timeframe.id}
                 />
               </Grid>
             </Grid>

@@ -1,22 +1,34 @@
 import React from 'react'
+import propTypes from 'prop-types'
 import { Autocomplete, Card, CardContent, TextField, Tooltip, Typography } from '@mui/material'
+import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { useTheme } from '@mui/material/styles'
-import MapIcon from '@mui/icons-material/Map'
-import propTypes from 'prop-types'
-import aoeStrings from '../../services/aoeiv-net/aoeiv-strings.json'
+import addDuration from 'date-fns-duration'
+import intlFormat from 'date-fns/intlFormat/index'
+import timeframeOptions from '../../constants/timeframe-periods.json'
 
-const sortedMaps = aoeStrings.map_type.sort((a, b) => {
-  if (a.string < b.string) {
-    return -1
-  }
-  if (a.string > b.string) {
-    return 1
-  }
-  return 0
-})
+function getTimeFrameLabel(option) {
+  if (option.duration) {
+    const durationDate = intlFormat(
+      addDuration(Date.now(), option.duration),
+      {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+      },
+      {
+        locale: navigator.language,
+      },
+    )
 
-export default function MapSelection({ selectFunction }) {
+    return `${option.name} - ${durationDate}`
+  }
+
+  return option.name
+}
+
+export default function TimeframeSelect({ timeframe, selectFunction }) {
   const theme = useTheme()
 
   return (
@@ -33,27 +45,28 @@ export default function MapSelection({ selectFunction }) {
           color="text.primary"
           gutterBottom
         >
-          <MapIcon fontSize="large" color="primary" />
-          Select Map
-          <Tooltip title="Select a map to compare map specific statistics." placement="top" arrow>
+          <AccessTimeIcon fontSize="large" color="primary" />
+          Select Timeframe
+          <Tooltip title="Select a timeframe to compare specific statistics." placement="top" arrow>
             <InfoOutlinedIcon color="secondary" fontSize="small" />
           </Tooltip>
         </Typography>
         <Autocomplete
-          getOptionLabel={option => option.string}
-          options={sortedMaps}
+          value={timeframe}
+          getOptionLabel={option => getTimeFrameLabel(option)}
+          options={Object.values(timeframeOptions)}
           onChange={(event, newValue) => {
-            let newMapId = null
+            let newTimeframeId = null
             if (newValue && newValue.id != null) {
-              newMapId = newValue.id
+              newTimeframeId = newValue.id
             }
-            selectFunction(newMapId)
+            selectFunction(newTimeframeId)
           }}
           renderInput={params => (
             <TextField
               {...params}
               fullWidth
-              placeholder="select map"
+              placeholder="select timeframe"
               sx={{
                 color: 'inherit',
                 width: '230px',
@@ -70,6 +83,7 @@ export default function MapSelection({ selectFunction }) {
   )
 }
 
-MapSelection.propTypes = {
+TimeframeSelect.propTypes = {
+  timeframe: propTypes.object.isRequired,
   selectFunction: propTypes.func.isRequired,
 }

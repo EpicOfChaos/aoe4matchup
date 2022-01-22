@@ -58,7 +58,7 @@ export default function LadderSearch({ ladderId, searchIconPadding }) {
           onChange={event => setSearchQuery(event.target.value)}
           sx={{
             color: 'inherit',
-            width: '250px',
+            width: '230px',
             '& .MuiOutlinedInput-root': {
               color: 'inherit',
               padding: theme.spacing(1, 1, 1, 0),

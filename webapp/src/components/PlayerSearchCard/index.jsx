@@ -11,9 +11,9 @@ export default function PlayerSearchCard({ ladderId }) {
   return (
     <Card
       sx={{
-        width: '280px',
+        // width: '260px',
         marginBottom: theme.spacing(2),
-        marginRight: theme.spacing(2),
+        // marginRight: theme.spacing(2),
       }}
       elevation={4}
     >

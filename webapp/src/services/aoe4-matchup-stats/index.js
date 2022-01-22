@@ -1,10 +1,17 @@
 import { calculateMatchHistoryStats } from './calculate-match-history-stats'
 import aoeStrings from '../aoeiv-net/aoeiv-strings.json'
 
-export function calculateStats(profileId, matchHistory, playerRating, ladderId) {
-  const playerMatchHistoryStats = calculateMatchHistoryStats(profileId, matchHistory, playerRating, ladderId)
+export function calculateStats(profileId, matchHistory, playerRating, ladderId, timeframeId) {
+  const playerMatchHistoryStats = calculateMatchHistoryStats(
+    profileId,
+    matchHistory,
+    playerRating,
+    ladderId,
+    timeframeId,
+  )
+
   const playerStatistics = {
-    winRate: playerMatchHistoryStats.winRate,
+    outcomeGrouped: playerMatchHistoryStats.outcomeGrouped,
     avgDuration: playerMatchHistoryStats.avgDuration,
     mostRecentPlayedCiv: playerMatchHistoryStats.mostRecentCiv,
     civWinRates: playerMatchHistoryStats.civWinRates,

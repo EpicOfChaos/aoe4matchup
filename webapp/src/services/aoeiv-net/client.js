@@ -62,11 +62,12 @@ export async function getMatchHistory(profileId, start = 0) {
   return data
 }
 
-export async function getPlayerRating(profileId, leaderBoardId = DEFAULT_LEADER_BOARD_ID) {
+export async function getPlayerRating(profileId, leaderBoardId = DEFAULT_LEADER_BOARD_ID, start = 0) {
   const { data } = await getApiClient().get('/player/ratinghistory', {
     params: {
       game: GAME_ID,
       language: DEFAULT_LANGUAGE,
+      start,
       count: HISTORY_COUNT,
       profile_id: profileId,
       leaderboard_id: leaderBoardId,
