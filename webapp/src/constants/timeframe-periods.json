@@ -1,22 +1,27 @@
-[
-  {
-    "id": 1,
+{
+  "1": {
+    "id": "1",
     "name": "All Time",
-    "period": null
+    "duration": null
   },
-  {
-    "id": 2,
-    "name": "Last Day",
-    "period": "P1D"
+  "2": {
+    "id": "2",
+    "name": "Last 3 Month",
+    "duration": "-P3M"
   },
-  {
-    "id": 3,
-    "name": "Last Week",
-    "period": "P1W"
-  },
-  {
-    "id": 4,
+  "3": {
+    "id": "3",
     "name": "Last Month",
-    "period": "P1M"
+    "duration": "-P1M"
+  },
+  "4": {
+    "id": "4",
+    "name": "Last Week",
+    "duration": "-P1W"
+  },
+  "5": {
+    "id": "5",
+    "name": "Last Day",
+    "duration": "-P1D"
   }
-]
+}

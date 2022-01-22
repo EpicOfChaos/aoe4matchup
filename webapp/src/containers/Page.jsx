@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    minHeight: '80.5vh',
+    minHeight: '100vh',
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
   },

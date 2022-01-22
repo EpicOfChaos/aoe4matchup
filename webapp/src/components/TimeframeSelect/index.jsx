@@ -4,7 +4,29 @@ import { Autocomplete, Card, CardContent, TextField, Tooltip, Typography } from 
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { useTheme } from '@mui/material/styles'
+import addDuration from 'date-fns-duration'
+import intlFormat from 'date-fns/intlFormat/index'
 import timeframeOptions from '../../constants/timeframe-periods.json'
+
+function getTimeFrameLabel(option) {
+  if (option.duration) {
+    const durationDate = intlFormat(
+      addDuration(Date.now(), option.duration),
+      {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+      },
+      {
+        locale: navigator.language,
+      },
+    )
+
+    return `${option.name} - ${durationDate}`
+  }
+
+  return option.name
+}
 
 export default function TimeframeSelect({ timeframe, selectFunction }) {
   const theme = useTheme()
@@ -31,8 +53,8 @@ export default function TimeframeSelect({ timeframe, selectFunction }) {
         </Typography>
         <Autocomplete
           value={timeframe}
-          getOptionLabel={option => option.name}
-          options={timeframeOptions}
+          getOptionLabel={option => getTimeFrameLabel(option)}
+          options={Object.values(timeframeOptions)}
           onChange={(event, newValue) => {
             let newTimeframeId = null
             if (newValue && newValue.id != null) {

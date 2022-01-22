@@ -3,7 +3,7 @@ import { differenceInMinutes, fromUnixTime } from 'date-fns'
 import { OutcomeEnum } from './outcome.enum'
 import ladderOptions from '../aoeiv-net/aoeiv-ladder-strings.json'
 
-export function autoMatcherV2(profileId, matchHistory, ratingHistory, ladderId) {
+export function autoMatcherV2(profileId, matchHistory, ratingHistory, ladderId, startTimeUnix) {
   const ladder = ladderOptions[ladderId]
   const autoMatches = matchHistory.filter(match => {
     return match.name === ladder.gameType && match.num_players === ladder.numPlayers
@@ -13,18 +13,22 @@ export function autoMatcherV2(profileId, matchHistory, ratingHistory, ladderId) 
     return []
   }
 
+  const relevantAutoMatches = autoMatches.filter(autoMatch => {
+    return autoMatch.started > startTimeUnix
+  })
+
   // The rating history can be delayed, if you are in a middle of a game you need to ignore first few games.
-  while (ratingHistory[0].timestamp < autoMatches[0].started) {
-    autoMatches.shift()
+  while (ratingHistory[0].timestamp < relevantAutoMatches[0].started) {
+    relevantAutoMatches.shift()
   }
 
   const mappedAutoMatches = []
   for (
     let autoMatchPos = 0, ratingPos = 0;
-    autoMatchPos < autoMatches.length && ratingPos < ratingHistory.length;
+    autoMatchPos < relevantAutoMatches.length && ratingPos < ratingHistory.length;
     autoMatchPos += 1, ratingPos += 1
   ) {
-    const autoMatch = autoMatches[autoMatchPos]
+    const autoMatch = relevantAutoMatches[autoMatchPos]
     const rating = ratingHistory[ratingPos]
 
     const player = find(autoMatch.players, p => {

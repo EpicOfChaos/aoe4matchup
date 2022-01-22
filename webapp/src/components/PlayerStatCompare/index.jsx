@@ -15,6 +15,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import aoeStrings from '../../services/aoeiv-net/aoeiv-strings.json'
 import CivFlag from '../CivFlag'
 import { playerKey } from '../../constants/player-key'
+import { OutcomeEnum } from '../../services/aoe4-matchup-stats/outcome.enum'
 
 const mapNames = aoeStrings.map_type.reduce((map, obj) => {
   return {
@@ -36,6 +37,7 @@ export default function PlayerStatCompare({
   playersLikelyCivPick,
   mapId,
   ladderId,
+  timeframeId,
 }) {
   const location = useLocation()
   const history = useHistory()
@@ -112,12 +114,20 @@ export default function PlayerStatCompare({
         key: `${ratingRow[0].key}_${profileId}`,
         data: `${playerLadder.rating} (${playerLadder.highest_rating})`,
       })
+      let { wins, losses } = playerLadder
+
+      if (timeframeId !== '1') {
+        wins = (stats.outcomeGrouped[OutcomeEnum.WIN] && stats.outcomeGrouped[OutcomeEnum.WIN].length) || 0
+        losses =
+          (stats.outcomeGrouped[OutcomeEnum.LOSS] && stats.outcomeGrouped[OutcomeEnum.LOSS].length) || 0
+      }
+      const games = wins + losses
+      if (games === 0) {
+        setNoData(true)
+      }
       winPctRow.push({
         key: `${winPctRow[0].key}_${profileId}`,
-        data: `${playerLadder.wins}/${playerLadder.games} (${(
-          (playerLadder.wins / playerLadder.games) *
-          100
-        ).toFixed(2)}%)`,
+        data: `${wins}/${games} (${((wins / games) * 100).toFixed(2)}%)`,
       })
       avgDurationRow.push({
         key: `${avgDurationRow[0].key}_${profileId}`,
@@ -175,7 +185,7 @@ export default function PlayerStatCompare({
           option.
         </Alert>
       )}
-      {!noData && (
+      {!noData ? (
         <TableContainer>
           <Table aria-label="simple table">
             <TableHead>
@@ -266,6 +276,10 @@ export default function PlayerStatCompare({
             </TableBody>
           </Table>
         </TableContainer>
+      ) : (
+        <Alert severity="warning">
+          No data to compare for this timeframe, try selecting a broader timeframe or a different ladder.
+        </Alert>
       )}
     </Paper>
   )
@@ -277,6 +291,7 @@ PlayerStatCompare.propTypes = {
   playersLikelyCivPick: propTypes.object.isRequired,
   mapId: propTypes.string,
   ladderId: propTypes.string.isRequired,
+  timeframeId: propTypes.string.isRequired,
 }
 
 PlayerStatCompare.defaultProps = {
