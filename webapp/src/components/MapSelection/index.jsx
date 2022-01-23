@@ -35,7 +35,12 @@ export default function MapSelection({ selectFunction }) {
         >
           <MapIcon fontSize="large" color="primary" />
           Select Map
-          <Tooltip title="Select a map to compare map specific statistics." placement="top" arrow>
+          <Tooltip
+            title="Select a map to compare map specific statistics."
+            placement="top"
+            arrow
+            enterTouchDelay={100}
+          >
             <InfoOutlinedIcon color="secondary" fontSize="small" />
           </Tooltip>
         </Typography>

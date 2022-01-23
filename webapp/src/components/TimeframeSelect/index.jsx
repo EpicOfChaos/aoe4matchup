@@ -47,7 +47,12 @@ export default function TimeframeSelect({ timeframe, selectFunction }) {
         >
           <AccessTimeIcon fontSize="large" color="primary" />
           Select Timeframe
-          <Tooltip title="Select a timeframe to compare specific statistics." placement="top" arrow>
+          <Tooltip
+            title="Select a timeframe to compare specific statistics."
+            placement="top"
+            arrow
+            enterTouchDelay={100}
+          >
             <InfoOutlinedIcon color="secondary" fontSize="small" />
           </Tooltip>
         </Typography>

@@ -26,7 +26,12 @@ export default function LadderSelect({ ladder, selectFunction }) {
         >
           <MilitaryTechIcon fontSize="large" color="primary" />
           Select Ladder
-          <Tooltip title="Select the ladder data you want to use for the statistics." placement="top" arrow>
+          <Tooltip
+            title="Select the ladder data you want to use for the statistics."
+            placement="top"
+            arrow
+            enterTouchDelay={100}
+          >
             <InfoOutlinedIcon color="secondary" fontSize="small" />
           </Tooltip>
         </Typography>

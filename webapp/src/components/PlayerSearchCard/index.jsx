@@ -29,6 +29,7 @@ export default function PlayerSearchCard({ ladderId }) {
             title="Search for a player to compare statistics. Currently you are only able to find and compare 1v1 quick match participants"
             placement="top"
             arrow
+            enterTouchDelay={100}
           >
             <InfoOutlinedIcon color="secondary" fontSize="small" />
           </Tooltip>

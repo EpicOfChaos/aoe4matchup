@@ -176,7 +176,7 @@ export default function PlayerStatCompare({
       setNoData(true)
     }
     return { headerRow: header, metricRows: tableRows }
-  }, [playerOrder, playersData, playersLikelyCivPick, mapId, ladderId])
+  }, [playerOrder, playersData, playersLikelyCivPick, mapId, ladderId, timeframeId])
   return (
     <Paper elevation={4}>
       {playerCompareWarning && (
@@ -198,7 +198,12 @@ export default function PlayerStatCompare({
                     <TableCell sx={styles} key={columnData.key}>
                       {i > 0 && (
                         <>
-                          <Tooltip title="View player on aoe4analytics.com" placement="top" arrow>
+                          <Tooltip
+                            title="View player on aoe4analytics.com"
+                            placement="top"
+                            arrow
+                            enterTouchDelay={100}
+                          >
                             <Link
                               href={`https://www.aoe4analytics.com/profile/${columnData.profileId}`}
                               target="_blank"
@@ -207,7 +212,12 @@ export default function PlayerStatCompare({
                               <OpenInNewIcon fontSize="small" aria-label="View player on aoe4analytics.com" />
                             </Link>
                           </Tooltip>
-                          <Tooltip title="Remove player from matchup comparison." placement="top" arrow>
+                          <Tooltip
+                            title="Remove player from matchup comparison."
+                            placement="top"
+                            arrow
+                            enterTouchDelay={100}
+                          >
                             <IconButton
                               size="small"
                               aria-label="remove player"
