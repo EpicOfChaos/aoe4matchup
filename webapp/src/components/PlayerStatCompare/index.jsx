@@ -59,6 +59,8 @@ export default function PlayerStatCompare({
     const avgDurationRow = [{ key: 'avg_duration', data: 'Avg Game Duration' }]
     const lastPlayedCivRow = [{ key: 'last_civ', data: 'Last Played Civ (Win %)' }]
     const mostPlayedCivRow = [{ key: 'most_civ', data: 'Most Played Civ (Win %)' }]
+    const winsMostAgainstCivRow = [{ key: 'wins_most_against', data: 'Wins Most Against Civ (Win %)' }]
+    const losesMostAgainstCivRow = [{ key: 'loses_most_against', data: 'Losses Most Against Civ (Win %)' }]
     const tableRows = [
       matchupPickRow,
       rankRow,
@@ -67,6 +69,8 @@ export default function PlayerStatCompare({
       avgDurationRow,
       lastPlayedCivRow,
       mostPlayedCivRow,
+      winsMostAgainstCivRow,
+      losesMostAgainstCivRow,
     ]
     const mapWinPctRow = []
     const mapCivWinPctRow = []
@@ -146,6 +150,22 @@ export default function PlayerStatCompare({
           2,
         )}%)`,
         civId: stats.mostPlayedCiv,
+      })
+
+      winsMostAgainstCivRow.push({
+        key: `${winsMostAgainstCivRow[0].key}_${profileId}`,
+        data: `${civNames[stats.winsMostAgainst]} (${(
+          stats.opponentCivWinRates[stats.winsMostAgainst] * 100
+        ).toFixed(2)}%)`,
+        civId: stats.winsMostAgainst,
+      })
+
+      losesMostAgainstCivRow.push({
+        key: `${winsMostAgainstCivRow[0].key}_${profileId}`,
+        data: `${civNames[stats.loseMostAgainst]} (${(
+          stats.opponentCivWinRates[stats.loseMostAgainst] * 100
+        ).toFixed(2)}%)`,
+        civId: stats.loseMostAgainst,
       })
       if (mapId != null) {
         const { mapStats } = stats

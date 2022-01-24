@@ -16,6 +16,9 @@ export function calculateStats(profileId, matchHistory, playerRating, ladderId, 
     mostRecentPlayedCiv: playerMatchHistoryStats.mostRecentCiv,
     civWinRates: playerMatchHistoryStats.civWinRates,
     mostPlayedCiv: playerMatchHistoryStats.mostPlayedCiv,
+    opponentCivWinRates: playerMatchHistoryStats.opponentCivWinRates,
+    winsMostAgainst: playerMatchHistoryStats.winsMostAgainst,
+    loseMostAgainst: playerMatchHistoryStats.loseMostAgainst,
     mapStats: {},
   }
   for (const map of aoeStrings.map_type) {

@@ -45,21 +45,45 @@ export function calculateMatchHistoryStats(profileId, matchHistory, ratingHistor
     return match.civId
   })
 
+  const opponentCivGrouped = groupBy(autoMatchHistory, match => {
+    return match.opponentCivIds[0]
+  })
+
   const civWinRates = groupByWinRate(civGrouped)
+  const opponentCivWinRates = groupByWinRate(opponentCivGrouped)
   const civAvgDurations = groupByAvgDuration(civGrouped)
 
   const mapCivSelectionRates = civSelectionRate(mapGrouped)
+  let winsMostAgainst = null
+  if (Object.keys(opponentCivWinRates).length > 0) {
+    winsMostAgainst = Object.keys(opponentCivWinRates).reduce((a, b) => {
+      if (opponentCivWinRates[a] > opponentCivWinRates[b]) {
+        return a
+      }
+      return b
+    })
+  }
 
-  const mostPlayedCiv =
-    (Object.keys(civPlayCounts).length > 0 &&
-      Object.keys(civPlayCounts).reduce((a, b) => {
-        if (civPlayCounts[a] > civPlayCounts[b]) {
-          return a
-        }
+  let loseMostAgainst = null
+  if (Object.keys(opponentCivWinRates).length > 0) {
+    loseMostAgainst = Object.keys(opponentCivWinRates).reduce((a, b) => {
+      if (opponentCivWinRates[a] < opponentCivWinRates[b]) {
+        return a
+      }
+      return b
+    })
+  }
 
-        return b
-      })) ||
-    null
+  let mostPlayedCiv = null
+  if (Object.keys(civPlayCounts).length > 0) {
+    mostPlayedCiv = Object.keys(civPlayCounts).reduce((a, b) => {
+      if (civPlayCounts[a] > civPlayCounts[b]) {
+        return a
+      }
+
+      return b
+    })
+  }
 
   return {
     outcomeGrouped,
@@ -69,6 +93,9 @@ export function calculateMatchHistoryStats(profileId, matchHistory, ratingHistor
     civWinRates,
     civAvgDurations,
     mapCivSelectionRates,
+    opponentCivWinRates,
+    winsMostAgainst,
+    loseMostAgainst,
     mostRecentCiv: autoMatchHistory[0] ? autoMatchHistory[0].civId : null,
     civPlayCounts,
     mostPlayedCiv,
