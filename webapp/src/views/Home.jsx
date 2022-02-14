@@ -17,8 +17,8 @@ import { playerKey } from '../constants/player-key'
 import ladderOptions from '../services/aoeiv-net/aoeiv-ladder-strings.json'
 import timeframeOptions from '../constants/timeframe-periods.json'
 import TimeframeSelect from '../components/TimeframeSelect'
-import { getMatchHistoryConcurrently } from '../util/get-match-history-concurrently'
-import { getPlayerRatingConcurrently } from '../util/get-player-rating-concurrently'
+import { getMatchHistorySynchronously } from '../util/get-match-history-synchronously'
+import { getPlayerRatingSynchronously } from '../util/get-player-rating-synchronously'
 
 async function getPlayerData(ladderId, players, existingPlayersData, timeframeId) {
   const playerData = {}
@@ -35,8 +35,8 @@ async function getPlayerData(ladderId, players, existingPlayersData, timeframeId
       playerData[playerKey(ladderId, player)] = existingData
     } else {
       const playerLadder = await getLeaderBoardForPlayer(ladderId, player)
-      const matchHistory = await getMatchHistoryConcurrently(player, playerLadder)
-      const playerRating = await getPlayerRatingConcurrently(player, ladderId, playerLadder)
+      const matchHistory = await getMatchHistorySynchronously(player, playerLadder)
+      const playerRating = await getPlayerRatingSynchronously(player, ladderId, playerLadder)
 
       playerData[playerKey(ladderId, player)] = {
         matchHistory,
